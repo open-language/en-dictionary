@@ -14,6 +14,7 @@ class IndexLine {
         this.line = line
 
         if (this.line.charAt(0) === ' ') {
+            this.isComment = true
             return this
         }
 

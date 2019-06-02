@@ -3,7 +3,7 @@ const IndexLine = require('./index.line')
 describe("Test parsing an index line", () => {
     test("Parse an index line", () => {
         let item = new IndexLine("  7 database and its documentation for any purpose and without fee or  ")
-        expect(item.lemma).toBe("")
+        expect(item.isComment).toBe(true)
 
         item = new IndexLine("advanced a 8 1 & 8 8 01840121 00819526 01876261 01211296 01208738 00816839 00412171 00198383")
         expect(item.lemma).toBe("advanced")
