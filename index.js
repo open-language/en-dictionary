@@ -1,7 +1,10 @@
-const packager = require('./package.json')
+const wordnet = require('en-wordnet')
+
+const version = "3.0"
+const wordnetPath = wordnet[version]
 
 const enDictionary = {
-    version: packager.wordnet.version,
+    wordnetPath
 }
 
 module.exports = enDictionary
