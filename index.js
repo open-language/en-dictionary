@@ -1,10 +1,3 @@
-const wordnet = require('en-wordnet')
+const reader = require('./reader')
 
-const version = "3.0"
-const wordnetPath = wordnet[version]
-
-const enDictionary = {
-    wordnetPath
-}
-
-module.exports = enDictionary
+reader.init()
