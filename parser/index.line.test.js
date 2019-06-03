@@ -13,7 +13,7 @@ describe("Test parsing an index line", () => {
         expect(item.pointers).toEqual(['Similar to'])
         expect(item.senseCount).toBe(8)
         expect(item.tagSenseCount).toBe(8)
-        expect(item.synsetOffsets).toEqual(['01840121', '00819526', '01876261', '01211296', '01208738', '00816839', '00412171', '00198383'])
+        expect(item.synsetOffsets).toEqual([1840121, 819526, 1876261, 1211296, 1208738, 816839, 412171, 198383])
 
         item = new IndexLine(".38-calibre a 1 1 \\ 1 0 03146602  ")
         expect(item.lemma).toBe(".38-calibre")
@@ -23,7 +23,7 @@ describe("Test parsing an index line", () => {
         expect(item.pointers).toEqual(['Pertainym (pertains to noun)'])
         expect(item.senseCount).toBe(1)
         expect(item.tagSenseCount).toBe(0)
-        expect(item.synsetOffsets).toEqual(['03146602'])
+        expect(item.synsetOffsets).toEqual([3146602])
 
         item = new IndexLine("10th a 1 1 & 1 0 02203373  ")
         expect(item.lemma).toBe("10th")
@@ -33,7 +33,7 @@ describe("Test parsing an index line", () => {
         expect(item.pointers).toEqual(['Similar to'])
         expect(item.senseCount).toBe(1)
         expect(item.tagSenseCount).toBe(0)
-        expect(item.synsetOffsets).toEqual(['02203373'])
+        expect(item.synsetOffsets).toEqual([2203373])
 
         item = new IndexLine("a_posteriori a 2 3 ! & ^ 2 0 00139126 00859350  ")
         expect(item.lemma).toBe("a_posteriori")
@@ -43,7 +43,7 @@ describe("Test parsing an index line", () => {
         expect(item.pointers).toEqual(['Antonym', 'Similar to', 'Also see'])
         expect(item.senseCount).toBe(2)
         expect(item.tagSenseCount).toBe(0)
-        expect(item.synsetOffsets).toEqual(['00139126', '00859350'])
+        expect(item.synsetOffsets).toEqual([139126, 859350])
 
         item = new IndexLine("around_the_bend a 1 1 & 1 0 02074929  ")
         expect(item.lemma).toBe("around_the_bend")
@@ -53,7 +53,7 @@ describe("Test parsing an index line", () => {
         expect(item.pointers).toEqual(['Similar to'])
         expect(item.senseCount).toBe(1)
         expect(item.tagSenseCount).toBe(0)
-        expect(item.synsetOffsets).toEqual(['02074929'])
+        expect(item.synsetOffsets).toEqual([2074929])
 
         item = new IndexLine("armed a 3 3 ! & ; 3 1 00142407 00146210 00144877  ")
         expect(item.lemma).toBe("armed")
@@ -63,7 +63,7 @@ describe("Test parsing an index line", () => {
         expect(item.pointers).toEqual(['Antonym', 'Similar to', undefined])
         expect(item.senseCount).toBe(3)
         expect(item.tagSenseCount).toBe(1)
-        expect(item.synsetOffsets).toEqual(['00142407', '00146210', '00144877'])
+        expect(item.synsetOffsets).toEqual([142407, 146210, 144877])
     })
 })
 

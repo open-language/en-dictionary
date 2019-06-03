@@ -11,6 +11,9 @@ const version = "3.0"
 const wordnetPath = wordnet[version]
 
 const reader = {
+    isReady: false,
+    readRemaining: 8,
+
     init: () => {
         fileTypes.forEach((fileType) => {
             wordTypes.forEach((wordType) => {
@@ -33,6 +36,14 @@ const reader = {
             } else {
                 const item = new parser.DataLine(line)
                 dictionary.addData(item)
+            }
+        })
+
+        readerInterface.on('close', () => {
+            reader.readRemaining -= 1
+            if (reader.readRemaining === 0) {
+                reader.isReady = true
+                dictionary.readComplete()
             }
         })
 

@@ -4,7 +4,7 @@ class DataLine {
     constructor(line) {
         this.synsetOffset = ''
         this.lexFilenum = ''
-        this.ssType = ''
+        this.pos = ''
         this.wordCount = 0
         this.words = [] // { word, lexId }
         this.pointerCnt = 0
@@ -26,9 +26,9 @@ class DataLine {
         })
 
         const meta = glossarySplit[0].split(' ')
-        this.synsetOffset = meta.shift()
+        this.synsetOffset = parseInt(meta.shift(), 10)
         this.lexFilenum = parseInt(meta.shift(), 10)
-        this.ssType = configs.pos[meta.shift()]
+        this.pos = configs.pos[meta.shift()]
         this.wordCount = parseInt(meta.shift(), 16)
         for (let index = 0; index < this.wordCount; index += 1) {
             const block = {}
@@ -41,7 +41,7 @@ class DataLine {
         for (let index = 0; index < this.pointerCnt; index += 1) {
             const block = {}
             block.pointerSymbol = meta.shift()
-            block.synsetOffset = meta.shift()
+            block.synsetOffset = parseInt(meta.shift(), 10)
             block.pos = configs.pos[meta.shift()]
             block.pointerSymbol = configs.pointerSymbols[block.pos][block.pointerSymbol]
             block.sourceTargetHex = meta.shift()
