@@ -43,8 +43,6 @@ describe("Test the dictionary", () => {
         expect(result[129612].synsetOffset).toBe(129612)
     })
 
-    
-
     test('Test Query dictionary', () => {
         let result = dictionary.query('preposterous')
         expect(result.word).toBe('preposterous')

@@ -24,7 +24,7 @@ const dictionary = {
         dictionary.isReady = true
     },
 
-    query: (search, type = 'lemma') => {
+    query: (search, type = 'lemma', fetchLinked = true) => {
         if (!dictionary.isReady) {
             return new Error('Dictionary is not ready to query yet')
         }
@@ -59,18 +59,20 @@ const dictionary = {
         })
 
         // Get results from linked words
-        const linkedResults = dictionary.dataSearch(linkedSynsets)
-        Object.keys(output.synsets).forEach((synset) => {
-            Object.keys(output.synsets[synset].linked).forEach((linked) => {
-                const linkedData = linkedResults[linked]
-                output.synsets[synset].linked[linked].pos = linkedData.pos
-                output.synsets[synset].linked[linked].words = []
-                linkedData.words.forEach((w) => {
-                    output.synsets[synset].linked[linked].words.push(w.word)
+        if (fetchLinked) {
+            const linkedResults = dictionary.dataSearch(linkedSynsets)
+            Object.keys(output.synsets).forEach((synset) => {
+                Object.keys(output.synsets[synset].linked).forEach((linked) => {
+                    const linkedData = linkedResults[linked]
+                    output.synsets[synset].linked[linked].pos = linkedData.pos
+                    output.synsets[synset].linked[linked].words = []
+                    linkedData.words.forEach((w) => {
+                        output.synsets[synset].linked[linked].words.push(w.word)
+                    })
+                    output.synsets[synset].linked[linked].glossary = linkedData.glossary
                 })
-                output.synsets[synset].linked[linked].glossary = linkedData.glossary
-            })
-        })
+            })    
+        }
         return output
     },
 
