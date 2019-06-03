@@ -63,5 +63,9 @@ describe("Test the dictionary", () => {
         expect(dictionary.endsWith('sterous')).toEqual(['blusterous', 'boisterous', 'preposterous'])
     })
 
+    test('Test Includes', () => {
+        expect(dictionary.includes('grating')).toEqual(['gratingly', 'denigrating', 'grating', 'diffraction_grating', 'integrating'])
+    })
+
 })
 
