@@ -33,15 +33,15 @@ const dictionary = {
 
         // Get results from index
         const indexResult = dictionary.indexSearch(search)
-        output.word = indexResult.lemma
-        output.pos = indexResult.pos
-        output.synsetOffsets = indexResult.synsetOffsets
+        output.word = indexResult[search].lemma
+        output.pos = indexResult[search].pos
+        output.synsetOffsets = indexResult[search].synsetOffsets
         output.synsets = {}
 
         // Get results from data
         const linkedSynsets = []
-        const dataResults = dictionary.dataSearch(indexResult.synsetOffsets)
-        indexResult.synsetOffsets.forEach((synset) => {
+        const dataResults = dictionary.dataSearch(indexResult[search].synsetOffsets)
+        indexResult[search].synsetOffsets.forEach((synset) => {
             const item = dataResults[synset]
             const op = {}
             op.offset = item.synsetOffset
@@ -73,6 +73,17 @@ const dictionary = {
         return output
     },
 
+    startsWith: (query) => {
+        const output = []
+        const filtered = dictionary.filter('index', (item) => {
+            return !item.isComment && (item.lemma.startsWith(query))
+        })
+        Object.keys(filtered).forEach((item) => {
+            output.push(filtered[item].lemma)
+        })
+        return output
+    },
+
     indexSearch: (query) => {
         const filtered = dictionary.filter('index', (item) => {
             return !item.isComment && (item.lemma === query)
@@ -94,10 +105,10 @@ const dictionary = {
     },
 
     filter: (fileType, filterFunc) => {
-        let results = {}
+        const results = {}
         if (fileType === 'index') {
             datastore.index.filter(filterFunc).forEach((set) => {
-                results = set
+                results[set.lemma] = set
             })
         } else {
             datastore.data.filter(filterFunc).forEach((set) => {

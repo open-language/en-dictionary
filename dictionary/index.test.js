@@ -9,9 +9,8 @@ describe("Test the dictionary", () => {
             setTimeout(() => {
                 if(reader.isReady) {
                     done()
-                } else {
-                    retrier()
                 }
+                retrier()
             }, 100)
         }
         retrier()
@@ -21,7 +20,7 @@ describe("Test the dictionary", () => {
         let result = dictionary.filter('index', (item) => {
             return !item.isComment && (item.lemma === 'preposterous')
         })
-        expect(result.lemma).toBe('preposterous')
+        expect(result.preposterous.lemma).toBe('preposterous')
 
         result = dictionary.filter('data', (item) => {
             return !item.isComment && (item.synsetOffset === 514618)
@@ -31,7 +30,7 @@ describe("Test the dictionary", () => {
 
     test('Test IndexSearch', () => {
         const result = dictionary.indexSearch('preposterous')
-        expect(result.lemma).toBe('preposterous')
+        expect(result.preposterous.lemma).toBe('preposterous')
     })
 
     test('Test DataSearch', () => {
@@ -40,7 +39,7 @@ describe("Test the dictionary", () => {
         expect(result[129612].synsetOffset).toBe(129612)
     })
 
-    test('Query dictionary', () => {
+    test('Test Query dictionary', () => {
         const result = dictionary.query('preposterous')
         expect(result.word).toBe('preposterous')
         expect(result.synsets[2570643].words).toEqual([
@@ -54,6 +53,10 @@ describe("Test the dictionary", () => {
             "preposterous",
             "ridiculous"
         ])
+    })
+
+    test('Test Starts with', () => {
+        expect(dictionary.startsWith('prestig')).toEqual(['prestigious', 'prestige', 'prestigiousness'])
     })
 })
 
