@@ -24,7 +24,7 @@ const dictionary = {
         dictionary.isReady = true
     },
 
-    query: (search) => {
+    query: (search, type = 'lemma') => {
         if (!dictionary.isReady) {
             return new Error('Dictionary is not ready to query yet')
         }
@@ -32,16 +32,17 @@ const dictionary = {
         const output = {}
 
         // Get results from index
-        const indexResult = dictionary.indexSearch(search)
-        output.word = indexResult[search].lemma
-        output.pos = indexResult[search].pos
-        output.synsetOffsets = indexResult[search].synsetOffsets
+        const indexResult = dictionary.indexSearch(search, type)
+        const firstResult = Object.keys(indexResult)[0]
+        output.word = indexResult[firstResult].lemma
+        output.pos = indexResult[firstResult].pos
+        output.synsetOffsets = indexResult[firstResult].synsetOffsets
         output.synsets = {}
 
         // Get results from data
         const linkedSynsets = []
-        const dataResults = dictionary.dataSearch(indexResult[search].synsetOffsets)
-        indexResult[search].synsetOffsets.forEach((synset) => {
+        const dataResults = dictionary.dataSearch(indexResult[firstResult].synsetOffsets)
+        indexResult[firstResult].synsetOffsets.forEach((synset) => {
             const item = dataResults[synset]
             const op = {}
             op.offset = item.synsetOffset
@@ -170,8 +171,11 @@ const dictionary = {
         })
     },
 
-    indexSearch: (query) => {
+    indexSearch: (query, type) => {
         const filtered = dictionary.filter('index', (item) => {
+            if (type === 'synset') {
+                return !item.isComment && (item.synsetOffsets.includes(query))
+            }
             return !item.isComment && (item.lemma === query)
         })
         if (Object.keys(filtered).length > 0) {

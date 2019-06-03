@@ -30,7 +30,11 @@ describe("Test the dictionary", () => {
     })
 
     test('Test IndexSearch', () => {
-        const result = dictionary.indexSearch('preposterous')
+        let result = dictionary.indexSearch('preposterous')
+        expect(result.preposterous.lemma).toBe('preposterous')
+
+        result = dictionary.indexSearch(2570643, 'synset')
+        console.log(JSON.stringify(result, null, 2))
         expect(result.preposterous.lemma).toBe('preposterous')
     })
 
@@ -40,8 +44,10 @@ describe("Test the dictionary", () => {
         expect(result[129612].synsetOffset).toBe(129612)
     })
 
+    
+
     test('Test Query dictionary', () => {
-        const result = dictionary.query('preposterous')
+        let result = dictionary.query('preposterous')
         expect(result.word).toBe('preposterous')
         expect(result.synsets[2570643].words).toEqual([
             "absurd",
@@ -54,6 +60,21 @@ describe("Test the dictionary", () => {
             "preposterous",
             "ridiculous"
         ])
+
+        result = dictionary.query(2570643, 'synset')
+        expect(result.word).toBe('absurd')
+        expect(result.synsets[2570643].words).toEqual([
+            "absurd",
+            "cockeyed",
+            "derisory",
+            "idiotic",
+            "laughable",
+            "ludicrous",
+            "nonsensical",
+            "preposterous",
+            "ridiculous"
+        ])
+        
     })
 
     test('Test Starts with', () => {
