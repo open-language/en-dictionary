@@ -9,8 +9,9 @@ describe("Test the dictionary", () => {
             setTimeout(() => {
                 if(reader.isReady) {
                     done()
+                } else {
+                    retrier()
                 }
-                retrier()
             }, 100)
         }
         retrier()
@@ -65,6 +66,10 @@ describe("Test the dictionary", () => {
 
     test('Test Includes', () => {
         expect(dictionary.includes('grating')).toEqual(['gratingly', 'denigrating', 'grating', 'diffraction_grating', 'integrating'])
+    })
+
+    test('Test With Each Char In', () => {
+        expect(dictionary.withEachCharIn('sudhanshuraheja')).toEqual(['church_of_jesus_christ_of_latter-day_saints'])
     })
 
 })
