@@ -34,7 +34,6 @@ describe("Test the dictionary", () => {
         expect(result.preposterous.lemma).toBe('preposterous')
 
         result = dictionary.indexSearch(2570643, 'synset')
-        console.log(JSON.stringify(result, null, 2))
         expect(result.preposterous.lemma).toBe('preposterous')
     })
 
