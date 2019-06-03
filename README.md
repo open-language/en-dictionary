@@ -168,7 +168,7 @@ result = dict.endsWith('sterous')
 result = dict.includes('grating')
 ```
 
-Here's what you would get on running the function above
+Here's what you would get on running the functions above
 
 ```json
 [
