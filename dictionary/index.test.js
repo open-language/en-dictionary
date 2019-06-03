@@ -72,5 +72,9 @@ describe("Test the dictionary", () => {
         expect(dictionary.withEachCharIn('sudhanshuraheja')).toEqual(['church_of_jesus_christ_of_latter-day_saints'])
     })
 
+    test('Test With Chars In', () => {
+        expect(dictionary.withCharsIn('yearns', 5).length).toBe(5)
+    })
+
 })
 

@@ -4,7 +4,7 @@ const dictionary = require('./dictionary')
 reader.init()
 
 function start() {
-    console.log( dictionary.withEachCharIn('herzegovina') )
+    console.log( dictionary.withCharsIn('yearn') )
 }
 
 const retrier = () => {

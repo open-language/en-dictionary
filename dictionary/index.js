@@ -133,6 +133,43 @@ const dictionary = {
         return output
     },
 
+    withCharsIn: (query, minLength = 0) => {
+        const output = []
+        const filtered = dictionary.filter('index', (item) => {
+            if (item.isComment) {
+                return false
+            }
+
+            const lemmaSplit = item.lemma.split('').sort()
+            const querySplit = query.split('').sort()
+
+            if (lemmaSplit.length < minLength) {
+                return false
+            }
+
+            if (lemmaSplit.length > querySplit.length) {
+                return false
+            }
+
+            for (let i = 0; i < lemmaSplit.length; i += 1) {
+                const char = lemmaSplit[i]
+                const foundQuery = querySplit.indexOf(char)
+                if (foundQuery < 0) {
+                    return false
+                }
+
+                querySplit.splice(foundQuery, 1)
+            }
+            return true
+        })
+        Object.keys(filtered).forEach((item) => {
+            output.push(filtered[item].lemma)
+        })
+        return output.sort((a, b) => {
+            return b.length - a.length
+        })
+    },
+
     indexSearch: (query) => {
         const filtered = dictionary.filter('index', (item) => {
             return !item.isComment && (item.lemma === query)
