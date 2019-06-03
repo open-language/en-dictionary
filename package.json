@@ -1,6 +1,6 @@
 {
   "name": "en-dictionary",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "main": "index.js",
   "repository": "git@github.com:open-language/en-dictionary.git",
   "author": "Sudhanshu Raheja <sudhanshu@leftshift.io>",
