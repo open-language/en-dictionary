@@ -58,5 +58,10 @@ describe("Test the dictionary", () => {
     test('Test Starts with', () => {
         expect(dictionary.startsWith('prestig')).toEqual(['prestigious', 'prestige', 'prestigiousness'])
     })
+
+    test('Test Ends with', () => {
+        expect(dictionary.endsWith('sterous')).toEqual(['blusterous', 'boisterous', 'preposterous'])
+    })
+
 })
 

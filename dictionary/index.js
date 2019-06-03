@@ -84,6 +84,17 @@ const dictionary = {
         return output
     },
 
+    endsWith: (query) => {
+        const output = []
+        const filtered = dictionary.filter('index', (item) => {
+            return !item.isComment && (item.lemma.endsWith(query))
+        })
+        Object.keys(filtered).forEach((item) => {
+            output.push(filtered[item].lemma)
+        })
+        return output
+    },
+
     indexSearch: (query) => {
         const filtered = dictionary.filter('index', (item) => {
             return !item.isComment && (item.lemma === query)
