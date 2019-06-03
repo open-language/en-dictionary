@@ -15,6 +15,16 @@ describe("Test parsing a data line", () => {
         expect(item.pointers[38]).toEqual({ pointerSymbol: 'Hyponym', pos: 'noun', sourceTargetHex: '0000', synsetOffset:'09477037' })
         expect(item.frames).toEqual([])
         expect(item.glossary).toEqual(['a tangible and visible entity', 'an entity that can cast a shadow', '"it was full of rackets, balls and other objects"'])
+
+        item = new DataLine('00089891 04 n 01 repossession 0 002 @ 00045907 n 0000 + 02205887 v 0102 | the action of regaining possession (especially the seizure of collateral securing a loan that is in default) ')
+        expect(item.synsetOffset).toBe('00089891')
+        expect(item.lexFilenum).toBe(4)
+        expect(item.ssType).toBe('noun')
+        expect(item.wordCount).toBe(1)
+        expect(item.words).toEqual([{ word: 'repossession', lexId: 0 }])
+        expect(item.pointerCnt).toBe(2)
+        expect(item.pointers[0]).toEqual({ pointerSymbol: 'Hypernym', pos: 'noun', sourceTargetHex: '0000', synsetOffset: '00045907' })
+        expect(item.glossary).toEqual([ 'the action of regaining possession (especially the seizure of collateral securing a loan that is in default)' ])
     })
 })
 
