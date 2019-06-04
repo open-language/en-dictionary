@@ -21,15 +21,28 @@ describe("Test the dictionary", () => {
     })
 
     test('Test IndexLemmaSearch', () => {
-        const result = dictionary.db.indexLemmaSearch('christmas_tree')
+        let result = dictionary.db.indexLemmaSearch('christmas_tree')
         expect(result.christmas_tree.lemma).toBe('christmas_tree')
         expect(result.christmas_tree.offsets.join(',')).toContain('12787364')
+
+        result = dictionary.db.indexLemmaSearch(['christmas_tree', 'preposterous'])
+        expect(result.christmas_tree.lemma).toBe('christmas_tree')
+        expect(result.christmas_tree.offsets.join(',')).toContain('12787364')
+        expect(result.preposterous.lemma).toBe('preposterous')
+        expect(result.preposterous.offsets.join(',')).toContain('2570643')
     })
 
     test('Test IndexOffsetSearch', () => {
-        const result = dictionary.db.indexOffsetSearch('12787364')
-        expect(Object.keys(result).join(',')).toContain('christmas_tree')
-        expect(result.christmas_tree.offsets.join(',')).toContain('12787364')
+        let result = dictionary.db.indexOffsetSearch(12787364)
+        expect(result['12787364'].map(item => item.lemma).join(',')).toContain('christmas_tree')
+        expect(result['12787364'].map(item => item.offsets).join(',')).toContain('12787364')
+
+        result = dictionary.db.indexOffsetSearch([12787364, 2570643])
+        expect(result['12787364'].map(item => item.lemma).join(',')).toContain('christmas_tree')
+        expect(result['12787364'].map(item => item.offsets).join(',')).toContain('12787364')
+        expect(result['2570643'].map(item => item.lemma).join(',')).toContain('preposterous')
+        expect(result['2570643'].map(item => item.offsets).join(',')).toContain('2570643')
+
     })
 
     test('Test addData', () => {
@@ -41,36 +54,40 @@ describe("Test the dictionary", () => {
     })
 
     test('Test DataLemmaSearch', () => {
-        const result = dictionary.db.dataLemmaSearch('christmas_tree')
-        expect(result.christmas_tree[0].words.join(',')).toContain('christmas_tree')
-        const offsets = []
-        result.christmas_tree.forEach((item) => {
-            offsets.push(item.offset)
-        })
-        expect(offsets.join(',')).toContain('12787364')
+        let result = dictionary.db.dataLemmaSearch('christmas_tree')
+        expect(result.christmas_tree.map(item => item.words).join(',')).toContain('christmas_tree')
+        expect(result.christmas_tree.map(item => item.offset).join(',')).toContain('12787364')
+
+        result = dictionary.db.dataLemmaSearch(['christmas_tree', 'preposterous'])
+        expect(result.christmas_tree.map(item => item.words).join(',')).toContain('christmas_tree')
+        expect(result.christmas_tree.map(item => item.offset).join(',')).toContain('12787364')
+        expect(result.preposterous.map(item => item.words).join(',')).toContain('preposterous')
+        expect(result.preposterous.map(item => item.offset).join(',')).toContain('2570643')
     })
 
     test('Test DataOffsetSearch', () => {
-        const result = dictionary.db.dataOffsetSearch(12787364)
+        let result = dictionary.db.dataOffsetSearch(12787364)
+        expect(result[12787364].offset).toBe(12787364)
+        expect(result[12787364].words.join(',')).toContain('christmas_tree')
+
+        result = dictionary.db.dataOffsetSearch([12787364, 2570643])
         expect(result[12787364].offset).toBe(12787364)
         expect(result[12787364].words.join(',')).toContain('christmas_tree')
     })
 
     test('Test searchWord', () => {
-        const result = dictionary.searchWord('yet')
-        expect(result.lemma).toBe('yet')
-        expect(result.pos).toBe('adverb')
+        let result = dictionary.searchWord('coaxing')
+        expect(result.coaxing.lemma).toBe('coaxing')
+        expect(result.coaxing.pos).toBe('noun')
 
-        const words = []
-        Object.keys(result.offsets).forEach((offset) => {
-            words.push(...result.offsets[offset].words)
-        })
-        expect(words).toContain('yet')
+        expect(result.coaxing.offsets.map(item => item.words).join(',')).toContain('coaxing')
+        expect(result.coaxing.offsets.map(item => item.glossary).join(',')).toContain('flattery designed to gain')
 
-        const glossary = []
-        Object.keys(result.offsets).forEach((offset) => {
-            glossary.push(...result.offsets[offset].glossary)
-        })
-        expect(glossary.join(',')).toContain('largest drug bust yet')
-    })
+        result = dictionary.searchWord(['yet', 'preposterous'])
+        expect(result.yet.lemma).toBe('yet')
+        expect(result.yet.pos).toBe('adverb')
+
+        expect(result.yet.offsets.map(item => item.words).join(',')).toContain('yet')
+        expect(result.yet.offsets.map(item => item.glossary).join(',')).toContain('largest drug bust yet')
+  })
 })

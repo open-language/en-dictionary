@@ -43,9 +43,7 @@ const datastore = {
         const output = {}
         const offsets = utils.getArray(query)
         offsets.forEach((offset) => {
-            datastore.indexOffsetIndex[offset].forEach((item) => {
-                output[item.lemma] = item
-            })
+            output[offset] = datastore.indexOffsetIndex[offset]
         })
         return output
     },
@@ -104,61 +102,12 @@ const queries = {
             return new Error('Dictionary is not ready to query yet')
         }
 
-        output = datastore.indexLemmaSearch(term)[term]
-        output.offsets = datastore.dataOffsetSearch(output.offsets)
+        output = datastore.indexLemmaSearch(term)
+        Object.keys(output).forEach((key) => {
+            output[key].offsets = Object.values(datastore.dataOffsetSearch(output[key].offsets))
+        })
         return output
     }
-
-    // query: (search) => {
-    //     if (!datastore.isReady) {
-    //         return new Error('Dictionary is not ready to query yet')
-    //     }
-
-    //     const output = {}
-
-    //     // Get results from index
-    //     const indexResult = datastore.indexLemmaSearch(search)
-    //     const firstResult = Object.keys(indexResult)[0]
-    //     output.word = indexResult[firstResult].lemma
-    //     output.pos = indexResult[firstResult].pos
-    //     output.offsets = indexResult[firstResult].offsets
-    //     output.synsets = {}
-
-    //     // Get results from data
-    //     const linkedSynsets = []
-    //     const dataResults = datastore.dataOffsetSearch(indexResult[firstResult].offsets)
-    //     indexResult[firstResult].offsets.forEach((synset) => {
-    //         const item = dataResults[synset]
-    //         const op = {}
-    //         op.offset = item.offset
-    //         op.pos = item.pos
-    //         op.words = []
-    //         item.words.forEach(word => op.words.push(word.word))
-    //         op.glossary = item.glossary
-    //         op.linked = {}
-    //         item.pointers.forEach(i => {
-    //             linkedSynsets.push(i.offset)
-    //             op.linked[i.offset] = { why: i.pointerSymbol, offset: i.offset }
-    //         })
-    //         output.synsets[synset] = op
-    //     })
-
-    //     // Get results from linked words
-    //     const linkedResults = datastore.dataOffsetSearch(linkedSynsets)
-    //     Object.keys(output.synsets).forEach((synset) => {
-    //         Object.keys(output.synsets[synset].linked).forEach((linked) => {
-    //             const linkedData = linkedResults[linked]
-    //             output.synsets[synset].linked[linked].pos = linkedData.pos
-    //             output.synsets[synset].linked[linked].words = []
-    //             linkedData.words.forEach((w) => {
-    //                 output.synsets[synset].linked[linked].words.push(w.word)
-    //             })
-    //             output.synsets[synset].linked[linked].glossary = linkedData.glossary
-    //         })
-    //     })    
-
-    //     return output
-    // },
 
     // querySynsets: (search) => {
     //     if (!datastore.isReady) {
