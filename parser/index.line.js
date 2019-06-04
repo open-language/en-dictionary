@@ -11,14 +11,13 @@ class IndexLine {
         this.tagSenseCount = 0
         this.offsets = []
         this.isComment = false
-        this.line = line
 
-        if (this.line.charAt(0) === ' ') {
+        if (line.charAt(0) === ' ') {
             this.isComment = true
             return this
         }
 
-        const tokens = this.line.split(' ')
+        const tokens = line.split(' ')
         this.lemma = tokens.shift()
         this.pos = configs.pos[tokens.shift()]
         this.synsetCount = parseInt(tokens.shift(), 10)

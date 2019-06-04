@@ -23,7 +23,7 @@ describe("Test the dictionary", () => {
         let result = dictionary.indexSearch('preposterous')
         expect(result.preposterous.lemma).toBe('preposterous')
 
-        result = dictionary.indexSearch(2570643, 'synset')
+        result = dictionary.indexSearch([2570643], 'synset')
         expect(result.preposterous.lemma).toBe('preposterous')
     })
 
@@ -95,7 +95,7 @@ describe("Test the dictionary", () => {
         terms = [1817500, 337172, 65064]
         for (let i = 0; i < terms.length; i += 1) {
             console.time(`dictionary.query(${terms[i]}, synset)`)
-            dictionary.querySynsets(terms[i])
+            dictionary.querySynsets([terms[i]])
             console.timeEnd(`dictionary.query(${terms[i]}, synset)`)
         }
 

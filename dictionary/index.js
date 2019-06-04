@@ -1,23 +1,45 @@
 const datastore = {
     index: [],
-    data: []
+    data: [],
+    indexOffsetIndex: {},
+    indexLemmaIndex: {},
+    dataOffsetIndex: {},
+    dataLemmaIndex: {}
 }
 
 const dictionary = {
     isReady: false,
 
     addIndex: (index) => {
+        if (index.isComment) {
+            return
+        }
         datastore.index.push(index)
-        return dictionary.getDatastoreSize()
+        datastore.indexLemmaIndex[index.lemma] = index
+        index.offsets.forEach((offset) => {
+            if (!Array.isArray(datastore.indexOffsetIndex[offset])) {
+                datastore.indexOffsetIndex[offset] = []
+            }
+            datastore.indexOffsetIndex[offset].push(index)
+        })
     },
 
     addData: (data) => {
+        if (data.isComment) {
+            return
+        }
         datastore.data.push(data)
-        return dictionary.getDatastoreSize()
+        datastore.dataOffsetIndex[data.offset] = data
+        data.words.forEach((word) => {
+            datastore.dataLemmaIndex[word.word] = data
+        })
     },
 
     getDatastoreSize: () => {
-        return datastore.index.length + datastore.data.length
+        return {
+            count: datastore.index.length + datastore.data.length,
+            indexes: Object.keys(datastore.indexOffsetIndex).length + Object.keys(datastore.indexLemmaIndex).length + Object.keys(datastore.dataOffsetIndex).length + Object.keys(datastore.dataLemmaIndex).length
+        }
     },
 
     readComplete: () => {
@@ -213,16 +235,19 @@ const dictionary = {
     },
 
     indexSearch: (query, type) => {
-        const filtered = dictionary.filter('index', (item) => {
-            if (type === 'synset') {
-                return !item.isComment && (item.offsets.includes(query))
-            }
-            return !item.isComment && (item.lemma === query)
-        })
-        if (Object.keys(filtered).length > 0) {
-            return filtered
+        const output = {}
+        if (type === 'synset') {
+            query.forEach((offset) => {
+                datastore.indexOffsetIndex[offset].forEach((item) => {
+                    output[item.lemma] = item
+                })
+            })
+            return output
         }
-        return new Error('Word not found in index')
+        // Lemma query
+        const item = datastore.indexLemmaIndex[query]
+        output[item.lemma] = item
+        return output
     },
 
     dataSearch: (query) => {

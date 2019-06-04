@@ -13,9 +13,7 @@ class DataLine {
         this.glossary = []
         this.isComment = false
 
-        this.line = line
-
-        if (this.line.charAt(0) === ' ') {
+        if (line.charAt(0) === ' ') {
             this.isComment = true
             return this
         }
