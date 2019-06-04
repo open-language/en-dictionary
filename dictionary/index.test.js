@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 const reader = require('../reader')
 const dictionary = require('./index')
 const parser = require('../parser')
