@@ -15,39 +15,38 @@ const reader = {
     readRemaining: 8,
 
     init: () => {
-        fileTypes.forEach((fileType) => {
-            wordTypes.forEach((wordType) => {
-                reader.read(fileType, wordType)
-            })
+        return new Promise((resolve) => {
+            fileTypes.forEach((fileType) => {
+                wordTypes.forEach((wordType) => {
+                    const file = `${wordnetPath}/${fileType}.${wordType}`
+                    const readerInterface = readline.createInterface({
+                        input: fs.createReadStream(file),
+                        output: false
+                    })
+            
+                    readerInterface.on('line', (line) => {
+                        if (fileType === 'index') {
+                            const item = new parser.IndexLine(line)
+                            dictionary.addIndex(item)
+                        } else {
+                            const item = new parser.DataLine(line)
+                            dictionary.addData(item)
+                        }
+                    })
+            
+                    readerInterface.on('close', () => {
+                        reader.readRemaining -= 1
+                        if (reader.readRemaining === 0) {
+                            reader.isReady = true
+                            dictionary.readComplete()
+                            resolve()
+                        }
+                    })
+            
+                    // Ignoring close, pause, resume, SIGCONT, SIGINT, SIGTSTP
+                })
+            })    
         })
-    },
-
-    read: (fileType, wordType) => {
-        const file = `${wordnetPath}/${fileType}.${wordType}`
-        const readerInterface = readline.createInterface({
-            input: fs.createReadStream(file),
-            output: false
-        })
-
-        readerInterface.on('line', (line) => {
-            if (fileType === 'index') {
-                const item = new parser.IndexLine(line)
-                dictionary.addIndex(item)
-            } else {
-                const item = new parser.DataLine(line)
-                dictionary.addData(item)
-            }
-        })
-
-        readerInterface.on('close', () => {
-            reader.readRemaining -= 1
-            if (reader.readRemaining === 0) {
-                reader.isReady = true
-                dictionary.readComplete()
-            }
-        })
-
-        // Ignoring close, pause, resume, SIGCONT, SIGINT, SIGTSTP
     },
 }
 

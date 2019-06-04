@@ -3,19 +3,9 @@ const dictionary = require('./index')
 
 describe("Test the dictionary", () => {
 
-    beforeAll(async (done) => {
-        reader.init()
-        const retrier = () => {
-            setTimeout(() => {
-                if(reader.isReady) {
-                    done()
-                } else {
-                    retrier()
-                }
-            }, 100)
-        }
-        retrier()
-    })
+    beforeAll(async () => {
+        await reader.init()
+    }, 10000)
 
     test('Test Filter', () => {
         let result = dictionary.filter('index', (item) => {
@@ -44,7 +34,7 @@ describe("Test the dictionary", () => {
     })
 
     test('Test Query dictionary', () => {
-        let result = dictionary.query('preposterous')
+        const result = dictionary.query('preposterous')
         expect(result.word).toBe('preposterous')
         expect(result.synsets[2570643].words).toEqual([
             "absurd",
@@ -58,19 +48,19 @@ describe("Test the dictionary", () => {
             "ridiculous"
         ])
 
-        result = dictionary.query(2570643, 'synset')
-        expect(result.word).toBe('absurd')
-        expect(result.synsets[2570643].words).toEqual([
-            "absurd",
-            "cockeyed",
-            "derisory",
-            "idiotic",
-            "laughable",
-            "ludicrous",
-            "nonsensical",
-            "preposterous",
-            "ridiculous"
-        ])
+        // result = dictionary.querySynsets([2570643])
+        // expect(result.word).toBe('absurd')
+        // expect(result.synsets[2570643].words).toEqual([
+        //     "absurd",
+        //     "cockeyed",
+        //     "derisory",
+        //     "idiotic",
+        //     "laughable",
+        //     "ludicrous",
+        //     "nonsensical",
+        //     "preposterous",
+        //     "ridiculous"
+        // ])
         
     })
 
@@ -92,6 +82,29 @@ describe("Test the dictionary", () => {
 
     test('Test With Chars In', () => {
         expect(dictionary.withCharsIn('yearns', 5).length).toBe(5)
+    })
+
+    test('Time Audits', () => {
+        let terms = ['preposterous', 'progressive', 'positive']
+        for(let i = 0; i < terms.length; i += 1) {
+            console.time(`dictionary.query(${terms[i]})`)
+            dictionary.query(terms[i])
+            console.timeEnd(`dictionary.query(${terms[i]})`)
+        }
+
+        terms = [1817500, 337172, 65064]
+        for (let i = 0; i < terms.length; i += 1) {
+            console.time(`dictionary.query(${terms[i]}, synset)`)
+            dictionary.querySynsets(terms[i])
+            console.timeEnd(`dictionary.query(${terms[i]}, synset)`)
+        }
+
+        // terms = [1817500, 337172, 65064]
+        // for (let i = 0; i < terms.length; i += 1) {
+        //     console.time(`dictionary.query(${terms[i]}, synset, false)`)
+        //     dictionary.query(terms[i], 'synset', false)
+        //     console.timeEnd(`dictionary.query(${terms[i]}, synset, false)`)
+        // }
     })
 
 })

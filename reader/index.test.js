@@ -1,7 +1,9 @@
-// const reader = require('./index')
+const reader = require('./index')
+const dictionary = require('../dictionary')
 
 describe("Test the reader functionality", () => {
-    test("Test initialization", () => {
-        // reader.init()
-    })
+    test("Test initialization", async () => {
+        await reader.init()
+        expect(dictionary.getDatastoreSize()).toBe(273178)
+    }, 10000)
 })
