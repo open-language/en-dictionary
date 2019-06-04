@@ -27,10 +27,10 @@ const reader = {
                     readerInterface.on('line', (line) => {
                         if (fileType === 'index') {
                             const item = new parser.IndexLine(line)
-                            dictionary.addIndex(item)
+                            dictionary.db.addIndex(item)
                         } else {
                             const item = new parser.DataLine(line)
-                            dictionary.addData(item)
+                            dictionary.db.addData(item)
                         }
                     })
             
@@ -38,7 +38,7 @@ const reader = {
                         reader.readRemaining -= 1
                         if (reader.readRemaining === 0) {
                             reader.isReady = true
-                            dictionary.readComplete()
+                            dictionary.db.ready()
                             resolve()
                         }
                     })

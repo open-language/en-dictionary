@@ -6,7 +6,6 @@ const enDictionary = {
         await reader.init()
         return dictionary
     },
-
 }
 
 module.exports = enDictionary

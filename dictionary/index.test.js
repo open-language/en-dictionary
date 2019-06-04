@@ -1,5 +1,10 @@
 const reader = require('../reader')
 const dictionary = require('./index')
+const parser = require('../parser')
+
+// function log(item) {
+//     console.log(JSON.stringify(item, null, 2))
+// }
 
 describe("Test the dictionary", () => {
 
@@ -7,105 +12,65 @@ describe("Test the dictionary", () => {
         await reader.init()
     }, 20000)
 
-    test('Test Filter', () => {
-        let result = dictionary.filter('index', (item) => {
-            return !item.isComment && (item.lemma === 'preposterous')
+    test('Test addIndex', () => {
+        const indexLine = new parser.IndexLine('test_christmas_tree n 5 2 @ #m 5 0 12787364 12738599 11621547 11621281 03026626  ')
+        dictionary.db.addIndex(indexLine)
+        expect(dictionary.db.indexLemmaIndex.test_christmas_tree.lemma).toBe('test_christmas_tree')
+        expect(dictionary.db.indexLemmaIndex.test_christmas_tree.offsets).toEqual([12787364, 12738599, 11621547, 11621281, 3026626])
+        expect(dictionary.db.indexOffsetIndex[12787364][0].offsets.join(',')).toContain('12787364')
+    })
+
+    test('Test IndexLemmaSearch', () => {
+        const result = dictionary.db.indexLemmaSearch('christmas_tree')
+        expect(result.christmas_tree.lemma).toBe('christmas_tree')
+        expect(result.christmas_tree.offsets.join(',')).toContain('12787364')
+    })
+
+    test('Test IndexOffsetSearch', () => {
+        const result = dictionary.db.indexOffsetSearch('12787364')
+        expect(Object.keys(result).join(',')).toContain('christmas_tree')
+        expect(result.christmas_tree.offsets.join(',')).toContain('12787364')
+    })
+
+    test('Test addData', () => {
+        const dataLine = new parser.DataLine('90588221 31 v 08 grok 0 get_the_picture 0 comprehend 0 savvy 0 dig 0 grasp 0 compass 0 apprehend 0 015 @ 00588888 v 0000 + 00533452 a 0801 + 01745027 a 0801 + 05805475 n 0802 + 10240082 n 0802 + 05806623 n 0602 + 05806855 n 0601 + 05805475 n 0404 + 00532892 a 0301 + 00532892 a 0302 + 05805902 n 0301 ~ 00590241 v 0000 ~ 00590366 v 0000 ~ 00590761 v 0000 ~ 00590924 v 0000 03 + 08 00 + 26 00 + 02 02 | get the meaning of something; "Do you comprehend the meaning of this letter?"  ')
+        dictionary.db.addData(dataLine)
+        expect(dictionary.db.dataLemmaIndex.grok[0].offset).toBe(588221)
+        expect(dictionary.db.dataOffsetIndex['90588221'].offset).toBe(90588221)
+        expect(dictionary.db.dataOffsetIndex['90588221'].words.length).toBe(8)
+    })
+
+    test('Test DataLemmaSearch', () => {
+        const result = dictionary.db.dataLemmaSearch('christmas_tree')
+        expect(result.christmas_tree[0].words.join(',')).toContain('christmas_tree')
+        const offsets = []
+        result.christmas_tree.forEach((item) => {
+            offsets.push(item.offset)
         })
-        expect(result.preposterous.lemma).toBe('preposterous')
+        expect(offsets.join(',')).toContain('12787364')
+    })
 
-        result = dictionary.filter('data', (item) => {
-            return !item.isComment && (item.offset === 514618)
+    test('Test DataOffsetSearch', () => {
+        const result = dictionary.db.dataOffsetSearch(12787364)
+        expect(result[12787364].offset).toBe(12787364)
+        expect(result[12787364].words.join(',')).toContain('christmas_tree')
+    })
+
+    test('Test searchWord', () => {
+        const result = dictionary.searchWord('yet')
+        expect(result.lemma).toBe('yet')
+        expect(result.pos).toBe('adverb')
+
+        const words = []
+        Object.keys(result.offsets).forEach((offset) => {
+            words.push(...result.offsets[offset].words)
         })
-        expect(result[514618].offset).toBe(514618)
+        expect(words).toContain('yet')
+
+        const glossary = []
+        Object.keys(result.offsets).forEach((offset) => {
+            glossary.push(...result.offsets[offset].glossary)
+        })
+        expect(glossary.join(',')).toContain('largest drug bust yet')
     })
-
-    test('Test IndexSearch', () => {
-        let result = dictionary.indexSearch('preposterous')
-        expect(result.preposterous.lemma).toBe('preposterous')
-
-        result = dictionary.indexSearch([2570643], 'synset')
-        expect(result.preposterous.lemma).toBe('preposterous')
-    })
-
-    test('Test DataSearch', () => {
-        const result = dictionary.dataSearch([2570643, 129612])
-        expect(result[2570643].offset).toBe(2570643)
-        expect(result[129612].offset).toBe(129612)
-    })
-
-    test('Test Query dictionary', () => {
-        const result = dictionary.query('preposterous')
-        expect(result.word).toBe('preposterous')
-        expect(result.synsets[2570643].words).toEqual([
-            "absurd",
-            "cockeyed",
-            "derisory",
-            "idiotic",
-            "laughable",
-            "ludicrous",
-            "nonsensical",
-            "preposterous",
-            "ridiculous"
-        ])
-
-        // result = dictionary.querySynsets([2570643])
-        // expect(result.word).toBe('absurd')
-        // expect(result.synsets[2570643].words).toEqual([
-        //     "absurd",
-        //     "cockeyed",
-        //     "derisory",
-        //     "idiotic",
-        //     "laughable",
-        //     "ludicrous",
-        //     "nonsensical",
-        //     "preposterous",
-        //     "ridiculous"
-        // ])
-        
-    })
-
-    test('Test Starts with', () => {
-        expect(dictionary.startsWith('prestig')).toEqual(['prestigious', 'prestige', 'prestigiousness'])
-    })
-
-    test('Test Ends with', () => {
-        expect(dictionary.endsWith('sterous')).toEqual(['blusterous', 'boisterous', 'preposterous'])
-    })
-
-    test('Test Includes', () => {
-        expect(dictionary.includes('grating')).toEqual(['gratingly', 'denigrating', 'grating', 'diffraction_grating', 'integrating'])
-    })
-
-    test('Test With Each Char In', () => {
-        expect(dictionary.withEachCharIn('sudhanshuraheja')).toEqual(['church_of_jesus_christ_of_latter-day_saints'])
-    })
-
-    test('Test With Chars In', () => {
-        expect(dictionary.withCharsIn('yearns', 5).length).toBe(5)
-    })
-
-    test('Time Audits', () => {
-        let terms = ['preposterous', 'progressive', 'positive']
-        for(let i = 0; i < terms.length; i += 1) {
-            console.time(`dictionary.query(${terms[i]})`)
-            dictionary.query(terms[i])
-            console.timeEnd(`dictionary.query(${terms[i]})`)
-        }
-
-        terms = [1817500, 337172, 65064]
-        for (let i = 0; i < terms.length; i += 1) {
-            console.time(`dictionary.query(${terms[i]}, synset)`)
-            dictionary.querySynsets([terms[i]])
-            console.timeEnd(`dictionary.query(${terms[i]}, synset)`)
-        }
-
-        // terms = [1817500, 337172, 65064]
-        // for (let i = 0; i < terms.length; i += 1) {
-        //     console.time(`dictionary.query(${terms[i]}, synset, false)`)
-        //     dictionary.query(terms[i], 'synset', false)
-        //     console.timeEnd(`dictionary.query(${terms[i]}, synset, false)`)
-        // }
-    })
-
 })
-

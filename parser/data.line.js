@@ -32,7 +32,7 @@ class DataLine {
             const block = {}
             block.word = meta.shift()
             block.lexId = parseInt(meta.shift(), 16)
-            this.words.push(block)
+            this.words.push(block.word.toLowerCase())
         }
 
         this.pointerCnt = parseInt(meta.shift(), 10)
@@ -42,7 +42,8 @@ class DataLine {
             block.offset = parseInt(meta.shift(), 10)
             block.pos = configs.pos[meta.shift()]
             block.pointerSymbol = configs.pointerSymbols[block.pos][block.pointerSymbol]
-            block.sourceTargetHex = meta.shift()
+            // block.sourceTargetHex = meta.shift()
+            meta.shift()
             this.pointers.push(block)
         }
 
