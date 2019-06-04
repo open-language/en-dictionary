@@ -16,5 +16,5 @@ describe("Test the index file for EnDictionary", () => {
             "preposterous",
             "ridiculous"
         ])
-    })
+    }, 10000)
 })

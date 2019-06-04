@@ -24,7 +24,7 @@ const dictionary = {
         dictionary.isReady = true
     },
 
-    query: (search, type = 'lemma', fetchLinked = true) => {
+    query: (search) => {
         if (!dictionary.isReady) {
             return new Error('Dictionary is not ready to query yet')
         }
@@ -32,7 +32,7 @@ const dictionary = {
         const output = {}
 
         // Get results from index
-        const indexResult = dictionary.indexSearch(search, type)
+        const indexResult = dictionary.indexSearch(search)
         const firstResult = Object.keys(indexResult)[0]
         output.word = indexResult[firstResult].lemma
         output.pos = indexResult[firstResult].pos
@@ -59,20 +59,59 @@ const dictionary = {
         })
 
         // Get results from linked words
-        if (fetchLinked) {
-            const linkedResults = dictionary.dataSearch(linkedSynsets)
-            Object.keys(output.synsets).forEach((synset) => {
-                Object.keys(output.synsets[synset].linked).forEach((linked) => {
-                    const linkedData = linkedResults[linked]
-                    output.synsets[synset].linked[linked].pos = linkedData.pos
-                    output.synsets[synset].linked[linked].words = []
-                    linkedData.words.forEach((w) => {
-                        output.synsets[synset].linked[linked].words.push(w.word)
-                    })
-                    output.synsets[synset].linked[linked].glossary = linkedData.glossary
+        const linkedResults = dictionary.dataSearch(linkedSynsets)
+        Object.keys(output.synsets).forEach((synset) => {
+            Object.keys(output.synsets[synset].linked).forEach((linked) => {
+                const linkedData = linkedResults[linked]
+                output.synsets[synset].linked[linked].pos = linkedData.pos
+                output.synsets[synset].linked[linked].words = []
+                linkedData.words.forEach((w) => {
+                    output.synsets[synset].linked[linked].words.push(w.word)
                 })
-            })    
+                output.synsets[synset].linked[linked].glossary = linkedData.glossary
+            })
+        })    
+
+        return output
+    },
+
+    querySynsets: (search) => {
+        if (!dictionary.isReady) {
+            return new Error('Dictionary is not ready to query yet')
         }
+
+        const output = {}
+        const dataSynsetQuery = []
+        // Get results from index
+        const indexResult = dictionary.indexSearch(search, 'synset')
+        Object.keys(indexResult).forEach((item) => {
+            output[indexResult[item].lemma] = {
+                word: indexResult[item].lemma,
+                pos: indexResult[item].pos,
+                synsetOffsets: indexResult[item].synsetOffsets    
+            }
+            dataSynsetQuery.push(...indexResult[item].synsetOffsets)
+        })
+
+        // Get results from data
+        // const linkedSynsets = []
+        // const dataResults = dictionary.dataSearch(dataSynsetQuery)
+        // indexResult[firstResult].synsetOffsets.forEach((synset) => {
+        //     const item = dataResults[synset]
+        //     const op = {}
+        //     op.offset = item.synsetOffset
+        //     op.pos = item.pos
+        //     op.words = []
+        //     item.words.forEach(word => op.words.push(word.word))
+        //     op.glossary = item.glossary
+        //     op.linked = {}
+        //     item.pointers.forEach(i => {
+        //         linkedSynsets.push(i.synsetOffset)
+        //         op.linked[i.synsetOffset] = { why: i.pointerSymbol, offset: i.synsetOffset }
+        //     })
+        //     output.synsets[synset] = op
+        // })
+
         return output
     },
 
