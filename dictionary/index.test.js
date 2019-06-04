@@ -114,5 +114,13 @@ describe("Test the dictionary", () => {
 
         expect(result.yet.offsets.map(item => item.words).join(',')).toContain('yet')
         expect(result.yet.offsets.map(item => item.glossary).join(',')).toContain('largest drug bust yet')
-  })
+    })
+
+    test('Test searchOffsetsInData', () => {
+        console.time('searchOffsetsInData')
+        const result = dictionary.searchOffsetsInData([12787364, 2570643])
+        console.timeEnd('searchOffsetsInData')
+        expect(result[12787364].offset).toBe(12787364)
+        expect(result[2570643].offset).toBe(2570643)
+    })
 })

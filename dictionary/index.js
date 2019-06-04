@@ -107,6 +107,10 @@ const queries = {
             output[key].offsets = Object.values(datastore.dataOffsetSearch(output[key].offsets))
         })
         return output
+    },
+
+    searchOffsetsInData: (offsets) => {
+        return datastore.dataOffsetSearch(offsets)
     }
 
     // querySynsets: (search) => {
@@ -264,5 +268,6 @@ const queries = {
 
 module.exports = {
     db: datastore,
-    searchWord: queries.searchWord
+    searchWord: queries.searchWord,
+    searchOffsetsInData: queries.searchOffsetsInData
 }
