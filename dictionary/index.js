@@ -36,24 +36,24 @@ const dictionary = {
         const firstResult = Object.keys(indexResult)[0]
         output.word = indexResult[firstResult].lemma
         output.pos = indexResult[firstResult].pos
-        output.synsetOffsets = indexResult[firstResult].synsetOffsets
+        output.offsets = indexResult[firstResult].offsets
         output.synsets = {}
 
         // Get results from data
         const linkedSynsets = []
-        const dataResults = dictionary.dataSearch(indexResult[firstResult].synsetOffsets)
-        indexResult[firstResult].synsetOffsets.forEach((synset) => {
+        const dataResults = dictionary.dataSearch(indexResult[firstResult].offsets)
+        indexResult[firstResult].offsets.forEach((synset) => {
             const item = dataResults[synset]
             const op = {}
-            op.offset = item.synsetOffset
+            op.offset = item.offset
             op.pos = item.pos
             op.words = []
             item.words.forEach(word => op.words.push(word.word))
             op.glossary = item.glossary
             op.linked = {}
             item.pointers.forEach(i => {
-                linkedSynsets.push(i.synsetOffset)
-                op.linked[i.synsetOffset] = { why: i.pointerSymbol, offset: i.synsetOffset }
+                linkedSynsets.push(i.offset)
+                op.linked[i.offset] = { why: i.pointerSymbol, offset: i.offset }
             })
             output.synsets[synset] = op
         })
@@ -88,26 +88,26 @@ const dictionary = {
             output[indexResult[item].lemma] = {
                 word: indexResult[item].lemma,
                 pos: indexResult[item].pos,
-                synsetOffsets: indexResult[item].synsetOffsets    
+                offsets: indexResult[item].offsets
             }
-            dataSynsetQuery.push(...indexResult[item].synsetOffsets)
+            dataSynsetQuery.push(...indexResult[item].offsets)
         })
 
         // Get results from data
         // const linkedSynsets = []
         // const dataResults = dictionary.dataSearch(dataSynsetQuery)
-        // indexResult[firstResult].synsetOffsets.forEach((synset) => {
+        // indexResult[firstResult].offsets.forEach((synset) => {
         //     const item = dataResults[synset]
         //     const op = {}
-        //     op.offset = item.synsetOffset
+        //     op.offset = item.offset
         //     op.pos = item.pos
         //     op.words = []
         //     item.words.forEach(word => op.words.push(word.word))
         //     op.glossary = item.glossary
         //     op.linked = {}
         //     item.pointers.forEach(i => {
-        //         linkedSynsets.push(i.synsetOffset)
-        //         op.linked[i.synsetOffset] = { why: i.pointerSymbol, offset: i.synsetOffset }
+        //         linkedSynsets.push(i.offset)
+        //         op.linked[i.offset] = { why: i.pointerSymbol, offset: i.offset }
         //     })
         //     output.synsets[synset] = op
         // })
@@ -215,7 +215,7 @@ const dictionary = {
     indexSearch: (query, type) => {
         const filtered = dictionary.filter('index', (item) => {
             if (type === 'synset') {
-                return !item.isComment && (item.synsetOffsets.includes(query))
+                return !item.isComment && (item.offsets.includes(query))
             }
             return !item.isComment && (item.lemma === query)
         })
@@ -227,7 +227,7 @@ const dictionary = {
 
     dataSearch: (query) => {
         const filtered = dictionary.filter('data', (item) => {
-            return !item.isComment && (query.includes(item.synsetOffset))
+            return !item.isComment && (query.includes(item.offset))
         })
         if (Object.keys(filtered).length > 0) {
             return filtered
@@ -243,7 +243,7 @@ const dictionary = {
             })
         } else {
             datastore.data.filter(filterFunc).forEach((set) => {
-                results[set.synsetOffset] = set
+                results[set.offset] = set
             })
         }
         return results

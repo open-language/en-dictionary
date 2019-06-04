@@ -5,7 +5,7 @@ describe("Test the dictionary", () => {
 
     beforeAll(async () => {
         await reader.init()
-    }, 10000)
+    }, 20000)
 
     test('Test Filter', () => {
         let result = dictionary.filter('index', (item) => {
@@ -14,9 +14,9 @@ describe("Test the dictionary", () => {
         expect(result.preposterous.lemma).toBe('preposterous')
 
         result = dictionary.filter('data', (item) => {
-            return !item.isComment && (item.synsetOffset === 514618)
+            return !item.isComment && (item.offset === 514618)
         })
-        expect(result[514618].synsetOffset).toBe(514618)
+        expect(result[514618].offset).toBe(514618)
     })
 
     test('Test IndexSearch', () => {
@@ -29,8 +29,8 @@ describe("Test the dictionary", () => {
 
     test('Test DataSearch', () => {
         const result = dictionary.dataSearch([2570643, 129612])
-        expect(result[2570643].synsetOffset).toBe(2570643)
-        expect(result[129612].synsetOffset).toBe(129612)
+        expect(result[2570643].offset).toBe(2570643)
+        expect(result[129612].offset).toBe(129612)
     })
 
     test('Test Query dictionary', () => {

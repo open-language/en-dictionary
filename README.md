@@ -44,7 +44,7 @@ Here's a sample outlet that you can expect for the queries above
 {
   "word": "preposterous",
   "pos": "adjective",
-  "synsetOffsets": [
+  "offsets": [
     2570643
   ],
   "synsets": {
@@ -137,7 +137,7 @@ Here's a sample outlet that you can expect for the queries above
 {
   "word": "word_for_word",
   "pos": "adverb",
-  "synsetOffsets": [
+  "offsets": [
     257864
   ],
   "synsets": {

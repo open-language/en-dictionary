@@ -9,7 +9,7 @@ class IndexLine {
         this.pointers = []
         this.senseCount = 0
         this.tagSenseCount = 0
-        this.synsetOffsets = []
+        this.offsets = []
         this.isComment = false
         this.line = line
 
@@ -29,9 +29,9 @@ class IndexLine {
         }
         this.senseCount = parseInt(tokens.shift(), 10)
         this.tagSenseCount = parseInt(tokens.shift(), 10)
-        this.synsetOffsets = []
+        this.offsets = []
         for (let index = 0; index < this.synsetCount; index += 1) {
-            this.synsetOffsets.push( parseInt(tokens.shift(), 10) )
+            this.offsets.push( parseInt(tokens.shift(), 10) )
         }
         return this
     }
