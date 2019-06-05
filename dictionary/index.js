@@ -111,47 +111,16 @@ const queries = {
 
     searchOffsetsInData: (offsets) => {
         return datastore.dataOffsetSearch(offsets)
+    },
+
+    searchSimple: (terms) => {
+        const output = {}
+        const result = queries.searchWord(terms)
+        Object.keys(result).forEach((lemma) => {
+            output[lemma] = { words: result[lemma].offsets[0].words.join(', '), meaning: result[lemma].offsets[0].glossary[0] }
+        })
+        return output
     }
-
-    // querySynsets: (search) => {
-    //     if (!datastore.isReady) {
-    //         return new Error('Dictionary is not ready to query yet')
-    //     }
-
-    //     const output = {}
-    //     const dataSynsetQuery = []
-    //     // Get results from index
-    //     const indexResult = datastore.indexOffsetSearch(search, 'synset')
-    //     Object.keys(indexResult).forEach((item) => {
-    //         output[indexResult[item].lemma] = {
-    //             word: indexResult[item].lemma,
-    //             pos: indexResult[item].pos,
-    //             offsets: indexResult[item].offsets
-    //         }
-    //         dataSynsetQuery.push(...indexResult[item].offsets)
-    //     })
-
-    //     // Get results from data
-    //     // const linkedSynsets = []
-    //     // const dataResults = dictionary.dataSearch(dataSynsetQuery)
-    //     // indexResult[firstResult].offsets.forEach((synset) => {
-    //     //     const item = dataResults[synset]
-    //     //     const op = {}
-    //     //     op.offset = item.offset
-    //     //     op.pos = item.pos
-    //     //     op.words = []
-    //     //     item.words.forEach(word => op.words.push(word.word))
-    //     //     op.glossary = item.glossary
-    //     //     op.linked = {}
-    //     //     item.pointers.forEach(i => {
-    //     //         linkedSynsets.push(i.offset)
-    //     //         op.linked[i.offset] = { why: i.pointerSymbol, offset: i.offset }
-    //     //     })
-    //     //     output.synsets[synset] = op
-    //     // })
-
-    //     return output
-    // },
 
     // startsWith: (query) => {
     //     const output = []
@@ -269,5 +238,6 @@ const queries = {
 module.exports = {
     db: datastore,
     searchWord: queries.searchWord,
-    searchOffsetsInData: queries.searchOffsetsInData
+    searchOffsetsInData: queries.searchOffsetsInData,
+    searchSimple: queries.searchSimple
 }

@@ -123,4 +123,11 @@ describe("Test the dictionary", () => {
         expect(result[12787364].offset).toBe(12787364)
         expect(result[2570643].offset).toBe(2570643)
     })
+
+    test('Test searchSimple', () => {
+        console.time('searchSimple-drink,train')
+        const result = dictionary.searchSimple(['drink', 'train'])
+        console.timeEnd('searchSimple-drink,train')
+        expect(result.drink.meaning).toBe('the act of drinking alcoholic beverages to excess')
+    })
 })
