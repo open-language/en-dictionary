@@ -90,14 +90,17 @@ class Dictionary {
                 .filter(item => Dictionary.hasAllCharsIn(query, item.lemma))
                 .map(item => item.lemma)
                 .sort((a, b) => {
+                    let diff = 0
                     if (priorityCharacters.length > 0) {
-                        const aPriority = Dictionary.hasAllCharsIn(priorityCharacters, a) ? 10 : 0
-                        const bPriority = Dictionary.hasAllCharsIn(priorityCharacters, b) ? 10 : 0
-                        return (b.length + bPriority) - (a.length + aPriority)
-                    } 
-                    return b.length - a.length
-                    
+                        const aPriority = Dictionary.hasAllCharsIn(a, priorityCharacters) ? 10 : 0
+                        const bPriority = Dictionary.hasAllCharsIn(b, priorityCharacters) ? 10 : 0
+                        diff = (b.length + bPriority) - (a.length + aPriority)
+                    } else {
+                        diff = b.length - a.length
+                    }
+                    return diff
                 })
+                .splice(0, 10)
         return this.searchSimpleFor(matchingWords)
     }
 

@@ -77,15 +77,13 @@ describe("Test the dictionary", () => {
         console.time('wordsWithCharsIn')
         const result = dictionary.wordsWithCharsIn('precipitate')
         console.timeEnd('wordsWithCharsIn')
-        expect(Object.keys(result).length).toBe(280)
-    })
+        expect(Object.keys(result).length).toBe(7)
 
-    // test('Test wordsWithCharsIn-priority', () => {
-    //     console.time('wordsWithCharsIn-priority')
-    //     const result2 = dictionary.wordsWithCharsIn('precipitate')
-    //     console.timeEnd('wordsWithCharsIn-priority')
-    //     console.log(JSON.stringify(result2, null, 2))
-    // })
+        console.time('wordsWithCharsIn-priority')
+        const result2 = dictionary.wordsWithCharsIn('precipitate', 'abc')
+        console.timeEnd('wordsWithCharsIn-priority')
+        expect(Object.keys(result2).length).toBe(7)
+    })
 
     test('Test hasAllCharsIn', () => {
         expect(Dictionary.hasAllCharsIn('bringing', 'ing')).toBe(true)

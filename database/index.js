@@ -42,7 +42,7 @@ class Database {
         const lemmas = utils.getArray(query)
         lemmas.forEach((lemma) => {
             const item = this.indexLemmaIndex[lemma]
-            output[item.lemma] = item
+            output[item.lemma] = Object.create(item)
         })
         return output
     }
@@ -51,7 +51,7 @@ class Database {
         const output = {}
         const offsets = utils.getArray(query)
         offsets.forEach((offset) => {
-            output[offset] = this.indexOffsetIndex[offset]
+            output[offset] = Object.create(this.indexOffsetIndex[offset])
         })
         return output
     }
@@ -74,7 +74,7 @@ class Database {
         const output = {}
         const lemmas = utils.getArray(query)
         lemmas.forEach((lemma) => {
-            output[lemma] = this.dataLemmaIndex[lemma]
+            output[lemma] = Object.create(this.dataLemmaIndex[lemma])
         })
         return output
     }
@@ -83,7 +83,7 @@ class Database {
         const output = {}
         const offsets = utils.getArray(query)
         offsets.forEach((offset) => {
-            output[offset] = this.dataOffsetIndex[offset]
+            output[offset] = Object.create(this.dataOffsetIndex[offset])
         })
         return output
     }
