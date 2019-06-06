@@ -1,7 +1,4 @@
-const getArray = (query) => {
-    return (!Array.isArray(query)) ? [query] : query
-}
-
+const utils = require('../utils')
 
 const database = {
     // Readiness
@@ -29,7 +26,7 @@ const database = {
     indexLemmaIndex: {},
     indexLemmaSearch: (query) => {
         const output = {}
-        const lemmas = getArray(query)
+        const lemmas = utils.getArray(query)
         lemmas.forEach((lemma) => {
             const item = database.indexLemmaIndex[lemma]
             output[item.lemma] = item
@@ -40,7 +37,7 @@ const database = {
     indexOffsetIndex: {},
     indexOffsetSearch: (query) => {
         const output = {}
-        const offsets = getArray(query)
+        const offsets = utils.getArray(query)
         offsets.forEach((offset) => {
             output[offset] = database.indexOffsetIndex[offset]
         })
@@ -66,7 +63,7 @@ const database = {
     dataLemmaIndex: {},
     dataLemmaSearch: (query) => {
         const output = {}
-        const lemmas = getArray(query)
+        const lemmas = utils.getArray(query)
         lemmas.forEach((lemma) => {
             output[lemma] = database.dataLemmaIndex[lemma]
         })
@@ -76,7 +73,7 @@ const database = {
     dataOffsetIndex: {},
     dataOffsetSearch: (query) => {
         const output = {}
-        const offsets = getArray(query)
+        const offsets = utils.getArray(query)
         offsets.forEach((offset) => {
             output[offset] = database.dataOffsetIndex[offset]
         })
