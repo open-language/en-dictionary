@@ -1,27 +1,5 @@
 const database = require('../database')
 
-const utils = {
-
-    hasAllCharsIn: (word, test) => {
-        const wordSplit = word.split('').sort()
-        const testSplit = test.split('').sort()
-        
-        if (testSplit.length > wordSplit.length) {
-            return false
-        }
-
-        for (let i = 0; i < testSplit.length; i += 1) {
-            const foundChar = wordSplit.indexOf(testSplit[i])
-            if (foundChar < 0) {
-                return false
-            }
-
-            wordSplit.splice(foundChar, 1)
-        }
-        return true
-    }
-}
-
 const queries = {
 
     searchFor: (term) => {
@@ -100,12 +78,12 @@ const queries = {
     wordsWithCharsIn: (query, priorityCharacters = '') => {
         const matchingWords = database
                 .index
-                .filter(item => utils.hasAllCharsIn(query, item.lemma))
+                .filter(item => queries.hasAllCharsIn(query, item.lemma))
                 .map(item => item.lemma)
                 .sort((a, b) => {
                     if (priorityCharacters.length > 0) {
-                        const aPriority = utils.hasAllCharsIn(priorityCharacters, a) ? 10 : 0
-                        const bPriority = utils.hasAllCharsIn(priorityCharacters, b) ? 10 : 0
+                        const aPriority = queries.hasAllCharsIn(priorityCharacters, a) ? 10 : 0
+                        const bPriority = queries.hasAllCharsIn(priorityCharacters, b) ? 10 : 0
                         return (b.length + bPriority) - (a.length + aPriority)
     
                     } 
@@ -115,11 +93,29 @@ const queries = {
         return queries.searchSimpleFor(matchingWords)
     },
 
+    hasAllCharsIn: (word, test) => {
+        const wordSplit = word.split('').sort()
+        const testSplit = test.split('').sort()
+        
+        if (testSplit.length > wordSplit.length) {
+            return false
+        }
+
+        for (let i = 0; i < testSplit.length; i += 1) {
+            const foundChar = wordSplit.indexOf(testSplit[i])
+            if (foundChar < 0) {
+                return false
+            }
+
+            wordSplit.splice(foundChar, 1)
+        }
+        return true
+    }
+
 }
 
 module.exports = {
     db: database,
-    utils,
     searchFor: queries.searchFor,
     searchOffsetsInDataFor: queries.searchOffsetsInDataFor,
     searchSimpleFor: queries.searchSimpleFor,
@@ -128,4 +124,5 @@ module.exports = {
     wordsIncluding: queries.wordsIncluding,
     wordsUsingAllCharactersFrom: queries.wordsUsingAllCharactersFrom,
     wordsWithCharsIn: queries.wordsWithCharsIn,
+    hasAllCharsIn: queries.hasAllCharsIn
 }

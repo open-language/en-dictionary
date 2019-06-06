@@ -90,8 +90,8 @@ describe("Test the dictionary", () => {
     // })
 
     test('Test hasAllCharsIn', () => {
-        expect(dictionary.utils.hasAllCharsIn('bringing', 'ing')).toBe(true)
-        expect(dictionary.utils.hasAllCharsIn('bringing', 'ding')).toBe(false)
+        expect(dictionary.hasAllCharsIn('bringing', 'ing')).toBe(true)
+        expect(dictionary.hasAllCharsIn('bringing', 'ding')).toBe(false)
     })
 
 })
