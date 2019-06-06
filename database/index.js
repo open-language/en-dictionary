@@ -37,12 +37,25 @@ class Database {
         })
     }
 
+    static copyIndex(index) {
+        return {
+            lemma: index.lemma,
+            pos: index.pos,
+            offsetCount: index.offsetCount,
+            pointerCount: index.pointerCount,
+            pointers: [...index.pointers],
+            senseCount: index.senseCount,
+            tagSenseCount: index.tagSenseCount,
+            offsets: [...index.offsets],
+            isComment: index.isComment
+        }
+    }
+
     indexLemmaSearch(query) {
         const output = {}
         const lemmas = utils.getArray(query)
         lemmas.forEach((lemma) => {
-            const item = this.indexLemmaIndex[lemma]
-            output[item.lemma] = Object.create(item)
+            output[this.indexLemmaIndex[lemma].lemma] = Database.copyIndex(this.indexLemmaIndex[lemma])
         })
         return output
     }
@@ -51,7 +64,10 @@ class Database {
         const output = {}
         const offsets = utils.getArray(query)
         offsets.forEach((offset) => {
-            output[offset] = Object.create(this.indexOffsetIndex[offset])
+            output[offset] = []
+            this.indexOffsetIndex[offset].forEach((item) => {
+                output[offset].push(Database.copyIndex(item))
+            })
         })
         return output
     }
@@ -70,11 +86,27 @@ class Database {
         })    
     }
 
+    static copyData(data) {
+        return {
+            offset: data.offset,
+            pos: data.pos,
+            wordCount: data.wordCount,
+            words: [...data.words],
+            pointerCnt: data.pointerCnt,
+            pointers: [...data.pointers],
+            glossary: [...data.glossary],
+            isComment: data.isComment
+        }
+    }
+
     dataLemmaSearch(query) {
         const output = {}
         const lemmas = utils.getArray(query)
         lemmas.forEach((lemma) => {
-            output[lemma] = Object.create(this.dataLemmaIndex[lemma])
+            output[lemma] = []
+            this.dataLemmaIndex[lemma].forEach((item) => {
+                output[lemma].push(Database.copyData(item))
+            })
         })
         return output
     }
@@ -83,7 +115,7 @@ class Database {
         const output = {}
         const offsets = utils.getArray(query)
         offsets.forEach((offset) => {
-            output[offset] = Object.create(this.dataOffsetIndex[offset])
+            output[offset] = Database.copyData(this.dataOffsetIndex[offset])
         })
         return output
     }

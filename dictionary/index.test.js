@@ -70,7 +70,7 @@ describe("Test the dictionary", () => {
         console.time('wordsUsingAllCharactersFrom')
         const result = dictionary.wordsUsingAllCharactersFrom('bringing')
         console.timeEnd('wordsUsingAllCharactersFrom')
-        expect(result.length).toBe(11)
+        expect(result.length).toBe(6)
     })
 
     test('Test wordsWithCharsIn', () => {

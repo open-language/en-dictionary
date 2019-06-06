@@ -68,7 +68,7 @@ class Dictionary {
                 .filter((item) => {
                     const lemmaSplit = item.lemma.split('').sort()
 
-                    if (ignorePhrases && lemmaSplit.includes('_')) {
+                    if (ignorePhrases && (lemmaSplit.includes('_') || lemmaSplit.includes('-') )) {
                         return false
                     }
 
