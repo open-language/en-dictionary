@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-const reader = require('../reader')
+const Reader = require('../reader')
 const dictionary = require('./index')
 
 // function log(item) {
@@ -9,6 +9,7 @@ const dictionary = require('./index')
 describe("Test the dictionary", () => {
 
     beforeAll(async () => {
+        const reader = new Reader()
         await reader.init()
     }, 20000)
     test('Test searchWord', () => {

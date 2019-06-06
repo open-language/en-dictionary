@@ -10,11 +10,13 @@ const wordTypes = ['adj', 'adv', 'noun', 'verb']
 const version = "3.0"
 const wordnetPath = wordnet[version]
 
-const reader = {
-    isReady: false,
-    readRemaining: 8,
+class Reader {
+    constructor() {
+        this.isReady = false
+        this.readRemaining = 8
+    }
 
-    init: () => {
+    init() {
         return new Promise((resolve) => {
             fileTypes.forEach((fileType) => {
                 wordTypes.forEach((wordType) => {
@@ -35,9 +37,9 @@ const reader = {
                     })
             
                     readerInterface.on('close', () => {
-                        reader.readRemaining -= 1
-                        if (reader.readRemaining === 0) {
-                            reader.isReady = true
+                        this.readRemaining -= 1
+                        if (this.readRemaining === 0) {
+                            this.isReady = true
                             dictionary.db.ready()
                             resolve()
                         }
@@ -47,7 +49,7 @@ const reader = {
                 })
             })    
         })
-    },
+    }
 }
 
-module.exports = reader
+module.exports = Reader
