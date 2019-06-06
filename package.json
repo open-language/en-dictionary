@@ -28,6 +28,7 @@
     "test": "jest --detectOpenHandles"
   },
   "dependencies": {
-    "en-wordnet": "^2.0.2"
+    "en-wordnet": "^2.0.2",
+    "reiterator": "^1.0.0"
   }
 }

@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-const Reader = require('../reader')
+const wordnet = require('en-wordnet')
 const dictionary = require('./index')
 
 // function log(item) {
@@ -9,9 +9,9 @@ const dictionary = require('./index')
 describe("Test the dictionary", () => {
 
     beforeAll(async () => {
-        const reader = new Reader()
-        await reader.init()
+        await dictionary.init(wordnet['3.0'])
     }, 20000)
+
     test('Test searchWord', () => {
         console.time('search')
         let result = dictionary.searchFor('coaxing')

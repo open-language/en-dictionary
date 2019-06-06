@@ -1,0 +1,30 @@
+  1 This software and database is being provided to you, the LICENSEE, by  
+  2 Princeton University under the following license.  By obtaining, using  
+  3 and/or copying this software and database, you agree that you have  
+  4 read, understood, and will comply with these terms and conditions.:  
+00001740 00 a 01 able 0 005 = 05200169 n 0000 = 05616246 n 0000 + 05616246 n 0101 + 05200169 n 0101 ! 00002098 a 0101 | (usually followed by `to') having the necessary means or skill or know-how or authority to do something; "able to swim"; "she was able to program her computer"; "we were at last able to buy a car"; "able to get a grant for the project"  
+00002098 00 a 01 unable 0 002 = 05200169 n 0000 ! 00001740 a 0101 | (usually followed by `to') not having the necessary means or skill or know-how; "unable to get to town without a car"; "unable to obtain funds"  
+00002312 00 a 02 abaxial 0 dorsal 4 002 ;c 06037666 n 0000 ! 00002527 a 0101 | facing away from the axis of an organ or organism; "the abaxial surface of a leaf is the underside or side facing away from the stem"  
+00002527 00 a 02 adaxial 0 ventral 4 002 ;c 06037666 n 0000 ! 00002312 a 0101 | nearest to or facing toward the axis of an organ or organism; "the upper side of a leaf is known as the adaxial surface"  
+00002730 00 a 01 acroscopic 0 002 ;c 06066555 n 0000 ! 00002843 a 0101 | facing or on the side toward the apex  
+00002843 00 a 01 basiscopic 0 002 ;c 06066555 n 0000 ! 00002730 a 0101 | facing or on the side toward the base  
+00002956 00 a 02 abducent 0 abducting 0 002 ;c 06080522 n 0000 ! 00003131 a 0101 | especially of muscles; drawing away from the midline of the body or from an adjacent part  
+00003131 00 a 03 adducent 0 adductive 0 adducting 0 003 ;c 06080522 n 0000 + 01449236 v 0201 ! 00002956 a 0101 | especially of muscles; bringing together or drawing toward the midline of the body or toward an adjacent part  
+00003356 00 a 01 nascent 0 005 + 07320302 n 0103 ! 00003939 a 0101 & 00003553 a 0000 & 00003700 a 0000 & 00003829 a 0000 |  being born or beginning; "the nascent chicks"; "a nascent insurgency"   
+00003553 00 s 02 emergent 0 emerging 0 003 & 00003356 a 0000 + 02625016 v 0102 + 00050693 n 0101 | coming into existence; "an emergent republic"  
+00003700 00 s 01 dissilient 0 002 & 00003356 a 0000 + 07434782 n 0101 | bursting open with force, as do some ripe seed vessels  
+00003829 00 s 01 parturient 0 002 & 00003356 a 0000 + 14048441 n 0101 | giving birth; "a parturient heifer"  
+00003939 00 a 01 dying 0 003 ! 00003356 a 0101 & 00004171 a 0000 & 00004296 a 0000 | in or associated with the process of passing from life or ceasing to be; "a dying man"; "his dying wish"; "a dying fire"; "a dying civilization"  
+00004171 00 s 01 moribund 0 001 & 00003939 a 0000 | being on the point of death; breathing your last; "a moribund patient"  
+00004296 00 s 01 last 0 001 & 00003939 a 0000 | occurring at the time of death; "his last words"; "the last rites"  
+00004413 00 a 01 abridged 0 005 ^ 01442186 a 0000 ! 00004980 a 0101 & 00004615 a 0000 & 00004723 a 0000 & 00004817 a 0000 | (used of texts) shortened by condensing or rewriting; "an abridged version"  
+00004615 00 s 02 cut 0 shortened 0 001 & 00004413 a 0000 | with parts removed; "the drastically cut film"  
+00004723 00 s 01 half-length 0 001 & 00004413 a 0000 | abridged to half its original length  
+00004817 00 s 01 potted 0 003 & 00004413 a 0000 ;r 08860123 n 0000 ;u 07075172 n 0000 | (British informal) summarized or abridged; "a potted version of a novel"  
+00004980 00 a 01 unabridged 0 002 ! 00004413 a 0101 & 00005107 a 0000 | (used of texts) not shortened; "an unabridged novel"  
+00005107 00 s 02 full-length 0 uncut 0 001 & 00004980 a 0000 | complete; "the full-length play"  
+00005205 00 a 01 absolute 0 007 + 05854474 n 0101 + 04738398 n 0101 ! 00006032 a 0101 & 00005473 a 0000 & 00005599 a 0000 & 00005718 a 0000 & 00005839 a 0000 | perfect or complete or pure; "absolute loyalty"; "absolute silence"; "absolute truth"; "absolute alcohol"  
+00005473 00 s 01 direct 0 001 & 00005205 a 0000 | lacking compromising or mitigating elements; exact; "the direct opposite"  
+00005599 00 s 02 implicit 0 unquestioning 0 001 & 00005205 a 0000 | being without doubt or reserve; "implicit trust"  
+00005718 00 s 01 infinite 0 002 & 00005205 a 0000 + 05209324 n 0101 | total and all-embracing; "God's infinite wisdom"  
+00005839 00 s 01 living 0 002 & 00005205 a 0000 ;u 06321054 n 0000 | (informal) absolute; "she is a living doll"; "scared the living daylights out of them"; "beat the living hell out of him"

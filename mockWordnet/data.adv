@@ -1,0 +1,30 @@
+  1 This software and database is being provided to you, the LICENSEE, by  
+  2 Princeton University under the following license.  By obtaining, using  
+  3 and/or copying this software and database, you agree that you have  
+  4 read, understood, and will comply with these terms and conditions.:  
+00001740 02 r 01 a_cappella 0 000 | without musical accompaniment; "they performed a cappella"  
+00001837 02 r 03 AD 0 A.D. 0 anno_Domini 0 000 | in the Christian era; used before dates after the supposed year Christ was born; "in AD 200"  
+00001981 02 r 03 CE 0 C.E. 0 Common_Era 0 000 | of the period coinciding with the Christian era; preferred by some writers who are not Christians; "in 200 CE"  
+00002142 02 r 03 BC 0 B.C. 0 before_Christ 0 000 | before the Christian era; used following dates before the supposed year Christ was born; "in 200 BC"  
+00002296 02 r 02 BCE 0 B.C.E. 0 000 | of the period before the Common Era; preferred by some writers who are not Christians; "in 200 BCE"  
+00002436 02 r 03 horseback 0 ahorse 0 ahorseback 0 000 | on the back of a horse; "he rode horseback to town"; "managed to escape ahorse"; "policeman patrolled the streets ahorseback"  
+00002621 02 r 05 barely 0 hardly 0 just 4 scarcely 0 scarce 0 000 | only a very short time before; "they could barely hear the speaker"; "we hardly knew them"; "just missed being hit"; "had scarcely rung the bell when the door flew open"; "would have scarce arrived before she would have found some excuse to leave"- W.B.Yeats  
+00002950 02 r 01 just 6 000 | exactly at this moment or the moment described; "we've just finished painting the walls, so don't touch them";  
+00003093 02 r 02 hardly 2 scarcely 2 001 \ 00016756 a 0201 | almost not; "he hardly ever goes fishing"; "he was hardly more than sixteen years old"; "they scarcely ever used the emergency generator"  
+00003294 02 r 01 anisotropically 0 001 \ 01361107 a 0101 | in an anisotropic manner  
+00003380 02 r 01 annoyingly 0 001 \ 00089550 a 0101 | in an annoying manner or to an annoying degree  
+00003483 02 r 03 basically 0 fundamentally 0 essentially 1 002 \ 00900616 a 0301 \ 01856419 a 0201 | in essence; at bottom or by one's (or its) very nature; "He is basically dishonest"; "the argument was essentially a technical one"; "for all his bluster he is in essence a shy person"  
+00003771 02 r 01 blessedly 0 001 \ 00670741 a 0101 | in a blessed manner  
+00003846 02 r 01 boiling 0 001 ;u 07075172 n 0000 | extremely; "boiling mad"  
+00003925 02 r 01 enviably 0 001 \ 00733541 a 0101 | in an enviable manner; "she was enviably fluent in French"  
+00004038 02 r 01 pointedly 0 001 \ 00765862 a 0101 | in such a manner as to make something clearly evident; "he pointedly ignored the question"  
+00004184 02 r 01 negatively 0 001 \ 01818234 a 0101 | in a negative way; "he was negatively inclined"  
+00004288 02 r 01 negatively 1 001 \ 01128508 a 0101 | in a harmful manner; "he was negatively affected"  
+00004394 02 r 01 kindly 0 002 \ 01372049 a 0101 ! 00004567 r 0101 | in a kind manner or out of kindness; "He spoke kindly to the boy"; "she kindly overlooked the mistake"  
+00004567 02 r 01 unkindly 0 002 ! 00004394 r 0101 \ 01373728 a 0101 | in an unkind manner or with unkindness; "The teacher treats the children unkindly"  
+00004722 02 r 05 merely 0 simply 0 just 0 only 2 but 1 002 \ 01792573 a 0203 \ 01792573 a 0102 | and nothing more; "I was merely asking"; "it is simply a matter of time"; "just a scratch"; "he was only a child"; "hopes that last but a moment"  
+00004967 02 r 01 simply 2 000 | absolutely; altogether; really; "we are simply broke"  
+00005055 02 r 02 plainly 1 simply 1 000 | in a simple manner; without extravagance or embellishment; "she was dressed plainly"; "they lived very simply"  
+00005210 02 r 01 anciently 0 001 \ 01728614 a 0101 | in ancient times; long ago; "a concern with what may have happened anciently"  
+00005343 02 r 01 arguably 0 001 \ 00602117 a 0101 | as can be shown by argument; "she is arguably the best"  
+00005453 02 r 01 unabashedly 0 001 \ 00155886 a 0101 | in an unabashed manner; "unabashedly, he asked for more"  

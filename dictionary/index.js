@@ -1,6 +1,13 @@
-const database = require('../database')
+const Database = require('../database')
+
+let database = null
 
 const dictionary = {
+
+    init: async (path) => {
+        database = new Database(path)
+        await database.init()
+    },
 
     searchFor: (term) => {
         let output = {}

@@ -3259,6 +3259,11 @@ regexpp@^2.0.1:
   resolved "https://registry.yarnpkg.com/regexpp/-/regexpp-2.0.1.tgz#8d19d31cf632482b589049f8281f93dbcba4d07f"
   integrity sha512-lv0M6+TkDVniA3aD1Eg0DVpfU/booSu7Eev3TDO/mZKHBfVjgCGTV4t4buppESEYDtkArYFOxTJWv6S5C+iaNw==
 
+reiterator@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/reiterator/-/reiterator-1.0.0.tgz#e4f965ce2a51ab5d8fd8bc3a658464645d56afcb"
+  integrity sha512-qweqYCl+icNC7ehUrwlXxGk4qD29znTJTFgMMOOkaL8UZhMzBkE8kcv2QeW4nEKPDol3mlx82saiXUuRMGmw/Q==
+
 remove-trailing-separator@^1.0.1:
   version "1.1.0"
   resolved "https://registry.yarnpkg.com/remove-trailing-separator/-/remove-trailing-separator-1.1.0.tgz#c24bce2a283adad5bc3f58e0d48249b92379d8ef"

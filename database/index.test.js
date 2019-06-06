@@ -1,18 +1,17 @@
 /* eslint-disable no-console */
-const Reader = require('../reader')
-const db = require('./index')
+const path = require('path')
+const wordnet = require('en-wordnet')
+const Database = require('./index')
 const parser = require('../parser')
 
-// function log(item) {
-//     console.log(JSON.stringify(item, null, 2))
-// }
+// const db = new Database(path.join(__dirname, '..', 'mockWordnet'))
+const db = new Database(wordnet['3.0'])
 
 describe("Test the dictionary", () => {
 
     beforeAll(async () => {
-        const reader = new Reader()
-        await reader.init()
-    }, 20000)
+        await db.init(path)
+    }, 10000)
 
     test('Test addIndex', () => {
         const indexLine = new parser.IndexLine('test_christmas_tree n 5 2 @ #m 5 0 12787364 12738599 11621547 11621281 03026626  ')

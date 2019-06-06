@@ -1,0 +1,20 @@
+  1 This software and database is being provided to you, the LICENSEE, by  
+  2 Princeton University under the following license.  By obtaining, using  
+  3 and/or copying this software and database, you agree that you have  
+  4 read, understood, and will comply with these terms and conditions.:  
+00001740 29 v 04 breathe 0 take_a_breath 0 respire 0 suspire 3 021 * 00005041 v 0000 * 00004227 v 0000 + 03110322 a 0301 + 00831191 n 0303 + 04080833 n 0301 + 04250850 n 0105 + 00831191 n 0101 ^ 00004227 v 0103 ^ 00005041 v 0103 $ 00002325 v 0000 $ 00002573 v 0000 ~ 00002573 v 0000 ~ 00002724 v 0000 ~ 00002942 v 0000 ~ 00003826 v 0000 ~ 00004032 v 0000 ~ 00004227 v 0000 ~ 00005041 v 0000 ~ 00006697 v 0000 ~ 00007328 v 0000 ~ 00017031 v 0000 02 + 02 00 + 08 00 | draw air into, and expel out of, the lungs; "I can breathe better when the air is clean"; "The patient is respiring"  
+00002325 29 v 01 respire 1 005 $ 00001740 v 0000 @ 02108377 v 0000 + 03110322 a 0101 + 00831191 n 0103 + 00830811 n 0101 01 + 02 00 | undergo the biomedical and metabolic processes of respiration by taking up oxygen and producing carbon monoxide  
+00002573 29 v 01 respire 2 003 $ 00001740 v 0000 @ 00001740 v 0000 + 03110322 a 0101 01 + 02 00 | breathe easily again, as after exertion or anxiety  
+00002724 29 v 01 choke 0 002 @ 00001740 v 0000 + 14058252 n 0101 01 + 02 00 | breathe with great difficulty, as when experiencing a strong emotion; "She choked with emotion when she spoke about her deceased husband"  
+00002942 29 v 01 hyperventilate 0 003 @ 00001740 v 0000 + 00833870 n 0101 $ 00003133 v 0000 01 + 02 00 | breathe excessively hard and fast; "The mountain climber started to hyperventilate"  
+00003133 29 v 01 hyperventilate 1 003 $ 00002942 v 0000 @ 00078760 v 0000 + 00833870 n 0101 01 + 09 00 | produce hyperventilation in; "The nurses had to hyperventilate the patient"  
+00003316 29 v 01 aspirate 0 003 @ 00005041 v 0000 + 00836788 n 0103 + 02748491 n 0101 01 + 08 00 | suck in (air)  
+00003431 29 v 04 burp 0 bubble 0 belch 0 eruct 0 005 @ 00105333 v 0000 + 00117578 n 0405 + 00117578 n 0301 + 09229709 n 0201 + 00117578 n 0103 01 + 02 00 | expel gas from the stomach; "In China it is polite to burp at the table"  
+00003662 29 v 01 force_out 0 001 @ 00105333 v 0000 02 + 08 00 + 11 00 | emit or cause to move with force of effort; "force out the air"; "force out the splinter"  
+00003826 29 v 02 hiccup 0 hiccough 0 003 @ 00001740 v 0000 + 14359459 n 0202 + 14359459 n 0101 01 + 02 00 | breathe spasmodically, and make a sound; "When you have to hiccup, drink a glass of cold water"  
+00004032 29 v 02 sigh 0 suspire 4 004 @ 00001740 v 0000 + 07129602 n 0202 + 07393756 n 0101 + 07129602 n 0101 01 + 02 00 | heave or utter a sigh; breathe deeply and heavily; "She sighed sadly"  
+00004227 29 v 03 exhale 0 expire 0 breathe_out 0 008 @ 00001740 v 0000 + 03110610 a 0201 + 00835267 n 0202 + 14842091 n 0102 + 00835267 n 0101 ! 00005041 v 0101 ~ 00006523 v 0000 ~ 00007012 v 0000 02 + 02 00 + 08 00 | expel air; "Exhale when you lift the weight"  
+00004492 29 v 01 hold 4 001 @ 02422663 v 0000 01 + 08 00 | keep from exhaling or expelling; "hold your breath"  
+00004605 29 v 03 exhale 1 give_forth 0 emanate 0 004 @ 00105333 v 0000 + 15109745 n 0301 + 01253060 n 0302 + 14842091 n 0102 02 + 08 00 + 11 00 | give out (breath or an odor); "The chimney exhales a thick smoke"  
+00004819 29 v 01 sneeze 0 005 * 00004227 v 0000 @ 00010241 v 0000 + 10616578 n 0101 + 14314850 n 0102 + 14314850 n 0101 01 + 02 00 | exhale spasmodically, as when an irritant entered one's nose; "Pepper makes me sneeze"  
+00005041 29 v 03 inhale 0 inspire 0 breathe_in 0 014 @ 00001740 v 0000 + 03110485 a 0201 + 00836788 n 0202 + 02749365 a 0101 + 14919156 n 0101 + 00836788 n 0101 + 04080833 n 0102 ! 00004227 v 0101 ~ 00003316 v 0000 ~ 00007549 v 0000 ~ 00101779 v 0000 ~ 00109263 v 0000 ~ 01199009 v 0000 ~ 01200245 v 0000 02 + 02 00 + 08 00 | draw in (air); "Inhale deeply"; "inhale the fresh mountain air"; "The patient has trouble inspiring"; "The lung cancer patient cannot inspire air very well"  

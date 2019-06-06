@@ -1,92 +1,100 @@
 const utils = require('../utils')
+const Reader = require('../reader')
 
-const database = {
-    // Readiness
-    isReady: false,
-    ready: () => {
-        database.isReady = true
-    },
+class Database {
 
-    // Index
-    index: [],
-    addIndex: (index) => {
+    constructor(path) {
+        this.isReady = false
+        this.index = []
+        this.indexLemmaIndex = {}
+        this.indexOffsetIndex = {}
+        this.data = []
+        this.dataLemmaIndex = {}
+        this.dataOffsetIndex = {}
+        this.path = path
+    }
+
+    async init() {
+        const reader = new Reader(this)
+        await reader.init()
+    }
+
+    ready() {
+        this.isReady = true
+    }
+
+    addIndex(index) {
         if (index.isComment) {
             return
         }
-        database.index.push(index)
-        database.indexLemmaIndex[index.lemma] = index
+        this.index.push(index)
+        this.indexLemmaIndex[index.lemma] = index
         index.offsets.forEach((offset) => {
-            if (!Array.isArray(database.indexOffsetIndex[offset])) {
-                database.indexOffsetIndex[offset] = []
+            if (!Array.isArray(this.indexOffsetIndex[offset])) {
+                this.indexOffsetIndex[offset] = []
             }
-            database.indexOffsetIndex[offset].push(index)
+            this.indexOffsetIndex[offset].push(index)
         })
-    },
+    }
 
-    indexLemmaIndex: {},
-    indexLemmaSearch: (query) => {
+    indexLemmaSearch(query) {
         const output = {}
         const lemmas = utils.getArray(query)
         lemmas.forEach((lemma) => {
-            const item = database.indexLemmaIndex[lemma]
+            const item = this.indexLemmaIndex[lemma]
             output[item.lemma] = item
         })
         return output
-    },
+    }
 
-    indexOffsetIndex: {},
-    indexOffsetSearch: (query) => {
+    indexOffsetSearch(query) {
         const output = {}
         const offsets = utils.getArray(query)
         offsets.forEach((offset) => {
-            output[offset] = database.indexOffsetIndex[offset]
+            output[offset] = this.indexOffsetIndex[offset]
         })
         return output
-    },
+    }
 
-    // Data
-    data: [],
-    addData: (data) => {
+    addData(data) {
         if (data.isComment) {
             return
         }
-        database.data.push(data)
-        database.dataOffsetIndex[data.offset] = data
+        this.data.push(data)
+        this.dataOffsetIndex[data.offset] = data
         data.words.forEach((word) => {
-            if (!Array.isArray(database.dataLemmaIndex[word])) {
-                database.dataLemmaIndex[word] = []
+            if (!Array.isArray(this.dataLemmaIndex[word])) {
+                this.dataLemmaIndex[word] = []
             }
-            database.dataLemmaIndex[word].push(data)
-        })
-    },
+            this.dataLemmaIndex[word].push(data)
+        })    
+    }
 
-    dataLemmaIndex: {},
-    dataLemmaSearch: (query) => {
+    dataLemmaSearch(query) {
         const output = {}
         const lemmas = utils.getArray(query)
         lemmas.forEach((lemma) => {
-            output[lemma] = database.dataLemmaIndex[lemma]
+            output[lemma] = this.dataLemmaIndex[lemma]
         })
         return output
-    },
+    }
 
-    dataOffsetIndex: {},
-    dataOffsetSearch: (query) => {
+    dataOffsetSearch(query) {
         const output = {}
         const offsets = utils.getArray(query)
         offsets.forEach((offset) => {
-            output[offset] = database.dataOffsetIndex[offset]
+            output[offset] = this.dataOffsetIndex[offset]
         })
         return output
-    },
+    }
 
-    // Size
-    getSize: () => {
+    getSize() {
         return {
-            count: database.index.length + database.data.length,
-            indexes: Object.keys(database.indexOffsetIndex).length + Object.keys(database.indexLemmaIndex).length + Object.keys(database.dataOffsetIndex).length + Object.keys(database.dataLemmaIndex).length
+            count: this.index.length + this.data.length,
+            indexes: Object.keys(this.indexOffsetIndex).length + Object.keys(this.indexLemmaIndex).length + Object.keys(this.dataOffsetIndex).length + Object.keys(this.dataLemmaIndex).length
         }
-    },
+    }
+
 }
 
-module.exports = database
+module.exports = Database

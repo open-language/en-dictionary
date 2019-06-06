@@ -1,0 +1,34 @@
+  1 This software and database is being provided to you, the LICENSEE, by  
+  2 Princeton University under the following license.  By obtaining, using  
+  3 and/or copying this software and database, you agree that you have  
+  4 read, understood, and will comply with these terms and conditions.:  
+'tween r 1 0 1 0 00250898  
+'tween_decks r 1 0 1 0 00498293  
+a.d. r 1 0 1 0 00001837  
+a.k.a. r 1 0 1 0 00270446  
+a.m. r 1 1 ; 1 0 00251304  
+a_bit r 1 0 1 1 00033663  
+a_cappella r 1 0 1 0 00001740  
+a_fortiori r 1 0 1 1 00063483  
+a_good_deal r 1 0 1 0 00059171  
+a_great_deal r 2 0 2 1 00059171 00059413  
+a_hundred_times r 1 0 1 1 00359932  
+a_la_carte r 1 0 1 0 00257981  
+a_la_mode r 1 0 1 0 00498182  
+a_little r 1 0 1 1 00033663  
+a_lot r 1 0 1 1 00059171  
+a_million_times r 1 0 1 0 00344659  
+a_posteriori r 1 1 ! 1 0 00251525  
+a_priori r 1 1 ! 1 0 00251611  
+a_trifle r 1 0 1 1 00033663  
+ab_initio r 1 0 1 0 00103194  
+aback r 2 0 2 0 00075739 00075656  
+abaft r 1 0 1 0 00275409  
+abaxially r 1 2 ! \ 1 0 00512503  
+abeam r 1 0 1 0 00075881  
+abed r 1 0 1 1 00229216  
+abjectly r 1 1 \ 1 0 00264339  
+ably r 1 1 \ 1 1 00185172  
+abnormally r 1 1 \ 1 1 00227171  
+aboard r 4 1 ; 4 2 00249878 00249736 00250056 00249964  
+abominably r 2 1 \ 2 0 00309632 00055101  
