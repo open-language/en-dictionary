@@ -2,7 +2,7 @@ const wordnet = require('en-wordnet')
 const readline = require('readline')
 const fs = require('fs')
 const parser = require('../parser')
-const dictionary = require('../dictionary')
+const database = require('../database')
 
 const fileTypes = ['index', 'data']
 const wordTypes = ['adj', 'adv', 'noun', 'verb']
@@ -29,10 +29,10 @@ class Reader {
                     readerInterface.on('line', (line) => {
                         if (fileType === 'index') {
                             const item = new parser.IndexLine(line)
-                            dictionary.db.addIndex(item)
+                            database.addIndex(item)
                         } else {
                             const item = new parser.DataLine(line)
-                            dictionary.db.addData(item)
+                            database.addData(item)
                         }
                     })
             
@@ -40,7 +40,7 @@ class Reader {
                         this.readRemaining -= 1
                         if (this.readRemaining === 0) {
                             this.isReady = true
-                            dictionary.db.ready()
+                            database.ready()
                             resolve()
                         }
                     })

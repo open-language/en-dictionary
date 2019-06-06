@@ -1,6 +1,6 @@
 const database = require('../database')
 
-const queries = {
+const dictionary = {
 
     searchFor: (term) => {
         let output = {}
@@ -21,7 +21,7 @@ const queries = {
 
     searchSimpleFor: (words) => {
         const output = {}
-        const result = queries.searchFor(words)
+        const result = dictionary.searchFor(words)
         Object.keys(result).forEach((lemma) => {
             output[lemma] = { 
                 words: result[lemma].offsets[0].words.join(', '), 
@@ -78,19 +78,19 @@ const queries = {
     wordsWithCharsIn: (query, priorityCharacters = '') => {
         const matchingWords = database
                 .index
-                .filter(item => queries.hasAllCharsIn(query, item.lemma))
+                .filter(item => dictionary.hasAllCharsIn(query, item.lemma))
                 .map(item => item.lemma)
                 .sort((a, b) => {
                     if (priorityCharacters.length > 0) {
-                        const aPriority = queries.hasAllCharsIn(priorityCharacters, a) ? 10 : 0
-                        const bPriority = queries.hasAllCharsIn(priorityCharacters, b) ? 10 : 0
+                        const aPriority = dictionary.hasAllCharsIn(priorityCharacters, a) ? 10 : 0
+                        const bPriority = dictionary.hasAllCharsIn(priorityCharacters, b) ? 10 : 0
                         return (b.length + bPriority) - (a.length + aPriority)
     
                     } 
                     return b.length - a.length
                     
                 })
-        return queries.searchSimpleFor(matchingWords)
+        return dictionary.searchSimpleFor(matchingWords)
     },
 
     hasAllCharsIn: (word, test) => {
@@ -114,15 +114,4 @@ const queries = {
 
 }
 
-module.exports = {
-    db: database,
-    searchFor: queries.searchFor,
-    searchOffsetsInDataFor: queries.searchOffsetsInDataFor,
-    searchSimpleFor: queries.searchSimpleFor,
-    wordsStartingWith: queries.wordsStartingWith,
-    wordsEndingWith: queries.wordsEndingWith,
-    wordsIncluding: queries.wordsIncluding,
-    wordsUsingAllCharactersFrom: queries.wordsUsingAllCharactersFrom,
-    wordsWithCharsIn: queries.wordsWithCharsIn,
-    hasAllCharsIn: queries.hasAllCharsIn
-}
+module.exports = dictionary
