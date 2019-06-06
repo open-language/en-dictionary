@@ -2,6 +2,25 @@ const utils = {
     getArray: (query) => {
         return (!Array.isArray(query)) ? [query] : query
     },
+
+    hasAllCharsIn: (word, test) => {
+        const wordSplit = word.split('').sort()
+        const testSplit = test.split('').sort()
+        
+        if (testSplit.length > wordSplit.length) {
+            return false
+        }
+
+        for (let i = 0; i < testSplit.length; i += 1) {
+            const foundChar = wordSplit.indexOf(testSplit[i])
+            if (foundChar < 0) {
+                return false
+            }
+
+            wordSplit.splice(foundChar, 1)
+        }
+        return true
+    }
 }
 
 const datastore = {
@@ -96,7 +115,7 @@ const datastore = {
 
 const queries = {
 
-    searchWord: (term) => {
+    searchFor: (term) => {
         let output = {}
         if (!datastore.isReady) {
             return new Error('Dictionary is not ready to query yet')
@@ -109,135 +128,95 @@ const queries = {
         return output
     },
 
-    searchOffsetsInData: (offsets) => {
+    searchOffsetsInDataFor: (offsets) => {
         return datastore.dataOffsetSearch(offsets)
     },
 
-    searchSimple: (terms) => {
+    searchSimpleFor: (words) => {
         const output = {}
-        const result = queries.searchWord(terms)
+        const result = queries.searchFor(words)
         Object.keys(result).forEach((lemma) => {
-            output[lemma] = { words: result[lemma].offsets[0].words.join(', '), meaning: result[lemma].offsets[0].glossary[0] }
+            output[lemma] = { 
+                words: result[lemma].offsets[0].words.join(', '), 
+                meaning: result[lemma].offsets[0].glossary[0],
+            }
         })
         return output
-    }
+    },
 
-    // startsWith: (query) => {
-    //     const output = []
-    //     const filtered = dictionary.filter('index', (item) => {
-    //         return !item.isComment && (item.lemma.startsWith(query))
-    //     })
-    //     Object.keys(filtered).forEach((item) => {
-    //         output.push(filtered[item].lemma)
-    //     })
-    //     return output
-    // },
+    wordsStartingWith: (prefix) => {
+        return datastore
+                .index
+                .filter(item => item.lemma.startsWith(prefix))
+                .map(item => item.lemma)
+    },
 
-    // endsWith: (query) => {
-    //     const output = []
-    //     const filtered = dictionary.filter('index', (item) => {
-    //         return !item.isComment && (item.lemma.endsWith(query))
-    //     })
-    //     Object.keys(filtered).forEach((item) => {
-    //         output.push(filtered[item].lemma)
-    //     })
-    //     return output
-    // },
+    wordsEndingWith: (suffix) => {
+        return datastore
+                .index
+                .filter(item => item.lemma.endsWith(suffix))
+                .map(item => item.lemma)
+    },
 
-    // includes: (query) => {
-    //     const output = []
-    //     const filtered = dictionary.filter('index', (item) => {
-    //         return !item.isComment && (item.lemma.includes(query))
-    //     })
-    //     Object.keys(filtered).forEach((item) => {
-    //         output.push(filtered[item].lemma)
-    //     })
-    //     return output
-    // },
+    wordsIncluding: (word) => {
+        return datastore
+                .index
+                .filter(item => item.lemma.includes(word))
+                .map(item => item.lemma)
+    },
 
-    // withEachCharIn: (query) => {
-    //     const output = []
-    //     const filtered = dictionary.filter('index', (item) => {
-    //         if (item.isComment) {
-    //             return false
-    //         }
+    wordsUsingAllCharactersFrom: (query, ignorePhrases = true) => {
+        const querySplit = query.split('').sort()
+        return datastore
+                .index
+                .filter((item) => {
+                    const lemmaSplit = item.lemma.split('').sort()
 
-    //         const lemmaSplit = item.lemma.split('').sort()
-    //         const querySplit = query.split('').sort()
+                    if (ignorePhrases && lemmaSplit.includes('_')) {
+                        return false
+                    }
 
-    //         for (let i = 0; i < querySplit.length; i += 1) {
-    //             const char = querySplit[i]
-    //             const found = lemmaSplit.indexOf(char)
-    //             if (found < 0) {
-    //                 return false
-    //             }
+                    for (let i = 0; i < querySplit.length; i += 1) {
+                        const found = lemmaSplit.indexOf(querySplit[i])
+                        if (found < 0) {
+                            return false
+                        }
+                        lemmaSplit.splice(found, 1)
+                    }
+                    return true
+                })
+                .map(item => item.lemma)
+    },
 
-    //             lemmaSplit.splice(found, 1)
-    //         }
-    //         return true
-    //     })
-    //     Object.keys(filtered).forEach((item) => {
-    //         output.push(filtered[item].lemma)
-    //     })
-    //     return output
-    // },
-
-    // withCharsIn: (query, minLength = 0) => {
-    //     const output = []
-    //     const filtered = dictionary.filter('index', (item) => {
-    //         if (item.isComment) {
-    //             return false
-    //         }
-
-    //         const lemmaSplit = item.lemma.split('').sort()
-    //         const querySplit = query.split('').sort()
-
-    //         if (lemmaSplit.length < minLength) {
-    //             return false
-    //         }
-
-    //         if (lemmaSplit.length > querySplit.length) {
-    //             return false
-    //         }
-
-    //         for (let i = 0; i < lemmaSplit.length; i += 1) {
-    //             const char = lemmaSplit[i]
-    //             const foundQuery = querySplit.indexOf(char)
-    //             if (foundQuery < 0) {
-    //                 return false
-    //             }
-
-    //             querySplit.splice(foundQuery, 1)
-    //         }
-    //         return true
-    //     })
-    //     Object.keys(filtered).forEach((item) => {
-    //         output.push(filtered[item].lemma)
-    //     })
-    //     return output.sort((a, b) => {
-    //         return b.length - a.length
-    //     })
-    // },
-
-    // filter: (fileType, filterFunc) => {
-    //     const results = {}
-    //     if (fileType === 'index') {
-    //         datastore.index.filter(filterFunc).forEach((set) => {
-    //             results[set.lemma] = set
-    //         })
-    //     } else {
-    //         datastore.data.filter(filterFunc).forEach((set) => {
-    //             results[set.offset] = set
-    //         })
-    //     }
-    //     return results
-    // }
+    wordsWithCharsIn: (query, priorityCharacters = '') => {
+        const matchingWords = datastore
+                .index
+                .filter(item => utils.hasAllCharsIn(query, item.lemma))
+                .map(item => item.lemma)
+                .sort((a, b) => {
+                    if (priorityCharacters.length > 0) {
+                        const aPriority = utils.hasAllCharsIn(priorityCharacters, a) ? 10 : 0
+                        const bPriority = utils.hasAllCharsIn(priorityCharacters, b) ? 10 : 0
+                        return (b.length + bPriority) - (a.length + aPriority)
     
+                    } 
+                    return b.length - a.length
+                    
+                })
+        return queries.searchSimpleFor(matchingWords)
+    },
+
 }
 
 module.exports = {
     db: datastore,
-    searchWord: queries.searchWord,
-    searchOffsetsInData: queries.searchOffsetsInData,
-    searchSimple: queries.searchSimple
+    utils,
+    searchFor: queries.searchFor,
+    searchOffsetsInDataFor: queries.searchOffsetsInDataFor,
+    searchSimpleFor: queries.searchSimpleFor,
+    wordsStartingWith: queries.wordsStartingWith,
+    wordsEndingWith: queries.wordsEndingWith,
+    wordsIncluding: queries.wordsIncluding,
+    wordsUsingAllCharactersFrom: queries.wordsUsingAllCharactersFrom,
+    wordsWithCharsIn: queries.wordsWithCharsIn,
 }
