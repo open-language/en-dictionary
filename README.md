@@ -16,144 +16,142 @@ yarn add en-dictionary
 
 Once it has been added, you need to initialize the dictionary, like so
 ```js
-const enDictionary = require('./index')
+const wordnet = require('en-wordnet')
+const Dictionary = require('./index')
 
 const start = async () => {
-    const dict = await enDictionary.init()
-    const result = dict.query('preposterous')
-    console.log(JSON.stringify(result, null, 2))
-}
+  const dictionary = new Dictionary(wordnet['3.0'])
+  await dictionary.init()
 
+  const result = dictionary.searchFor('yet')
+}
 start()
 ```
 There are some more [examples here](https://github.com/open-language/en-dictionary/blob/master/index.test.js).
 
 The dictionary can take about 2000ms to load the data in memory, it doesn't use an external database/redis yet (nor is that planned, since most queries are fast enough, and the underlying data doesn't changes probably once a year)
 
+As of version 1.2.0, most lookups are extremely fast
+```txt
+search: 1ms
+search2: 0ms
+searchOffsetsInData: 0ms
+searchSimple-drink,train: 0ms
+wordsStartingWith: 18ms
+wordsEndingWith: 16ms
+wordsIncluding: 17ms
+wordsUsingAllCharactersFrom: 231ms
+wordsWithCharsIn: 326ms
+wordsWithCharsIn-priority: 350ms
+addIndex: 0ms
+indexLemmaSearch: 0ms
+indexLemmaSearch2: 0ms
+indexOffsetSearch: 0ms
+indexOffsetSearch2: 0ms
+addData: 0ms
+dataLemmaSearch: 0ms
+dataLemmaSearch2: 0ms
+dataOffsetSearch: 0ms
+dataOffsetSearch2: 0ms
+```
+
 ### Query words
 
 You can query for a single word with this syntax. If you want to use multiple words, replace the ` ` with `_`.
 ```js
-let result = dict.query('preposterous')
-result = dict.query('word_for_word')
+let result = dict.searchFor('preposterous')
 ```
 
 Here's a sample outlet that you can expect for the queries above
 
 ```json
 {
-  "word": "preposterous",
-  "pos": "adjective",
-  "offsets": [
-    2570643
-  ],
-  "synsets": {
-    "2570643": {
-      "offset": 2570643,
-      "pos": "ajective satellite",
-      "words": [
-        "absurd",
-        "cockeyed",
-        "derisory",
-        "idiotic",
-        "laughable",
-        "ludicrous",
-        "nonsensical",
-        "preposterous",
-        "ridiculous"
-      ],
-      "glossary": [
-        "incongruous",
-        "inviting ridicule",
-        "\"the absurd excuse that the dog ate his homework\"",
-        "\"that's a cockeyed idea\"",
-        "\"ask a nonsensical question and get a nonsensical answer\"",
-        "\"a contribution so small as to be laughable\"",
-        "\"it is ludicrous to call a cottage a mansion\"",
-        "\"a preposterous attempt to turn back the pages of history\"",
-        "\"her conceited assumption of universal interest in her rather dull children was ridiculous\""
-      ],
-      "linked": {
-        "852922": {
-          "why": "Derivationally related form",
-          "offset": 852922,
-          "pos": "verb",
-          "words": [
-            "deride"
-          ],
-          "glossary": [
-            "treat or speak of with contempt",
-            "\"He derided his student's attempt to solve the biggest problem in mathematics\""
-          ]
-        },
-        "2570282": {
-          "why": "Similar to",
-          "offset": 2570282,
-          "pos": "adjective",
-          "words": [
-            "foolish"
-          ],
-          "glossary": [
-            "devoid of good sense or judgment",
-            "\"foolish remarks\"",
-            "\"a foolish decision\""
-          ]
-        },
-        "4891683": {
-          "why": "Derivationally related form",
-          "offset": 4891683,
-          "pos": "noun",
-          "words": [
-            "absurdity",
-            "fatuity",
-            "fatuousness",
-            "silliness"
-          ],
-          "glossary": [
-            "a ludicrous folly",
-            "\"the crowd laughed at the absurdity of the clown's behavior\""
-          ]
-        },
-        "6607809": {
-          "why": "Derivationally related form",
-          "offset": 6607809,
-          "pos": "noun",
-          "words": [
-            "absurdity",
-            "absurdness",
-            "ridiculousness"
-          ],
-          "glossary": [
-            "a message whose content is at variance with reason"
-          ]
-        }
+  "preposterous": {
+    "lemma": "preposterous",
+    "pos": "adjective",
+    "offsetCount": 1,
+    "pointerCount": 1,
+    "pointers": [
+      "Similar to"
+    ],
+    "senseCount": 1,
+    "tagSenseCount": 1,
+    "offsets": [
+      {
+        "offset": 2570643,
+        "pos": "ajective satellite",
+        "wordCount": 9,
+        "words": [
+          "absurd",
+          "cockeyed",
+          "derisory",
+          "idiotic",
+          "laughable",
+          "ludicrous",
+          "nonsensical",
+          "preposterous",
+          "ridiculous"
+        ],
+        "pointerCnt": 5,
+        "pointers": [
+          {
+            "pointerSymbol": "Similar to",
+            "offset": 2570282,
+            "pos": "adjective"
+          },
+          {
+            "pointerSymbol": "Derivationally related form",
+            "offset": 6607809,
+            "pos": "noun"
+          },
+          {
+            "pointerSymbol": "Derivationally related form",
+            "offset": 852922,
+            "pos": "verb"
+          },
+          {
+            "pointerSymbol": "Derivationally related form",
+            "offset": 4891683,
+            "pos": "noun"
+          },
+          {
+            "pointerSymbol": "Derivationally related form",
+            "offset": 6607809,
+            "pos": "noun"
+          }
+        ],
+        "glossary": [
+          "incongruous",
+          "inviting ridicule",
+          "\"the absurd excuse that the dog ate his homework\"",
+          "\"that's a cockeyed idea\"",
+          "\"ask a nonsensical question and get a nonsensical answer\"",
+          "\"a contribution so small as to be laughable\"",
+          "\"it is ludicrous to call a cottage a mansion\"",
+          "\"a preposterous attempt to turn back the pages of history\"",
+          "\"her conceited assumption of universal interest in her rather dull children was ridiculous\""
+        ],
+        "isComment": false
       }
-    }
+    ],
+    "isComment": false
   }
 }
 ```
 
+There's also a simpler response version
+
+```js
+let result = dict.searchSimpleFor('preposterous')
+```
+
+... which returns with a short and sweet
+
 ```json
 {
-  "word": "word_for_word",
-  "pos": "adverb",
-  "offsets": [
-    257864
-  ],
-  "synsets": {
-    "257864": {
-      "offset": 257864,
-      "pos": "adverb",
-      "words": [
-        "verbatim",
-        "word_for_word"
-      ],
-      "glossary": [
-        "using exactly the same words",
-        "\"he repeated her remarks verbatim\""
-      ],
-      "linked": {}
-    }
+  "preposterous": {
+    "words": "absurd, cockeyed, derisory, idiotic, laughable, ludicrous, nonsensical, preposterous, ridiculous",
+    "meaning": "incongruous"
   }
 }
 ```
@@ -163,9 +161,9 @@ Here's a sample outlet that you can expect for the queries above
 You can find words which start or end with a specific set of words, you can do this
 
 ```js
-let result = dict.startsWith('prestig')
-result = dict.endsWith('sterous')
-result = dict.includes('grating')
+let result = dict.wordsStartingWith('prestig')
+result = dict.wordsEndingWith('sterous')
+result = dict.wordsIncluding('grating')
 ```
 
 Here's what you would get on running the functions above
@@ -201,59 +199,144 @@ Here's what you would get on running the functions above
 This is useful when you're playing scrabble or a similar game. You can define the list of characters that you have available and the minimum length of the words that you need
 
 ```js
-let result = dict.withCharsIn('toaddndyrnrtssknwfsaregte', 10)
+let result = dict.wordsWithCharsIn('toaddndyrnrtssknwfsaregte')
+let result = dict.wordsWithCharsIn('toaddndyrnrtssknwfsaregte', 'ab') // In this case words which both a and b will show up on the top
 ```
 
 You can expect the following output if you run the command above
 
 ```json
-[
-  "transgressor",
-  "grandstander",
-  "nonattender",
-  "transferase",
-  "strangeness",
-  "anterograde",
-  "forwardness",
-  "nonstandard",
-  "transgender",
-  "rottenness",
-  "transgress",
-  "retrograde",
-  "greensward",
-  "narrowness",
-  "afterwards",
-  "nonstarter",
-  "orangeness",
-  "ornateness",
-  "retreatant",
-  "retrogress",
-  "setterwort",
-  "stewardess",
-  "grandstand",
-  "aftertaste",
-  "transferer",
-  "transferor",
-  "frontwards",
-  "wantonness",
-  "waterfront"
-]
+{
+  "transgressor": {
+    "words": "transgressor",
+    "meaning": "someone who transgresses"
+  },
+  "grandstander": {
+    "words": "grandstander",
+    "meaning": "someone who performs with an eye to the applause from spectators in the grandstand"
+  },
+  "nonattender": {
+    "words": "no-show, nonattender, truant",
+    "meaning": "someone who shirks duty"
+  },
+  "forwardness": {
+    "words": "readiness, eagerness, zeal, forwardness",
+    "meaning": "prompt willingness"
+  },
+  "anterograde": {
+    "words": "anterograde",
+    "meaning": "of amnesia"
+  },
+  "transferase": {
+    "words": "transferase",
+    "meaning": "any of various enzymes that move a chemical group from one compound to another compound"
+  },
+  "transgender": {
+    "words": "transgender, transgendered",
+    "meaning": "involving a partial or full reversal of gender"
+  },
+  "strangeness": {
+    "words": "unfamiliarity, strangeness",
+    "meaning": "unusualness as a consequence of not being well known"
+  },
+  "nonstandard": {
+    "words": "nonstandard",
+    "meaning": "not standard"
+  },
+  "waterfront": {
+    "words": "waterfront",
+    "meaning": "the area of a city (such as a harbor or dockyard) alongside a body of water"
+  }
+}
 ```
 
 ### Find words which have all of the words of a given word
 
 This is sort of the opposite of what we did above
 ```js
-let result = dict.withEachCharIn('princetonuniversity')
+let result = dict.wordsUsingAllCharactersFrom('indonesia')
 ```
 
 You can expect the following output if you run the command above
 ```json
 [
-  "minnesota_multiphasic_personality_inventory",
-  "princeton_university",
-  "royal_society_of_london_for_improving_natural_knowledge",
-  "united_society_of_believers_in_christ's_second_appearing"
+  "abdominocentesis",
+  "inconsiderately",
+  "denationalise",
+  "conventionalised",
+  "animadversion",
+  "dimensional",
+  "antiredeposition",
+  "inconsiderable",
+  "inconsiderate",
+  "indonesian",
+  "institutionalised",
+  "institutionalized",
+  "insubordinate",
+  "multidimensional",
+  "noninstitutionalised",
+  "noninstitutionalized",
+  "nonresidential",
+  "unidimensional",
+  "unimpassioned",
+  "unsaponified",
+  "consideration",
+  "contradictoriness",
+  "decentalisation",
+  "decentralisation",
+  "decolonisation",
+  "decriminalisation",
+  "dehumanisation",
+  "demagnetisation",
+  "demineralisation",
+  "demonetisation",
+  "demonisation",
+  "denationalisation",
+  "denisonia",
+  "denominationalism",
+  "densification",
+  "depersonalisation",
+  "depersonalization",
+  "desalination",
+  "desalinisation",
+  "desalinization",
+  "desensitisation",
+  "desensitization",
+  "designation",
+  "destalinisation",
+  "destalinization",
+  "destination",
+  "desynchronisation",
+  "desynchronization",
+  "didanosine",
+  "dimensionality",
+  "disappointment",
+  "discontinuance",
+  "disinfestation",
+  "disintegration",
+  "disorientation",
+  "dispassionateness",
+  "dispensation",
+  "dissemination",
+  "extraordinariness",
+  "gymnadeniopsis",
+  "inconsiderateness",
+  "inconsideration",
+  "indonesia",
+  "indonesian",
+  "inordinateness",
+  "kinosternidae",
+  "modernisation",
+  "mountainside",
+  "ordinariness",
+  "predestination",
+  "predestinationist",
+  "pseudohallucination",
+  "reconsideration",
+  "sedimentation",
+  "superordination",
+  "tenderisation",
+  "underestimation"
 ]
 ```
 
