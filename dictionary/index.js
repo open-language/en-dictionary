@@ -1,7 +1,6 @@
+const database = require('../database')
+
 const utils = {
-    getArray: (query) => {
-        return (!Array.isArray(query)) ? [query] : query
-    },
 
     hasAllCharsIn: (word, test) => {
         const wordSplit = word.split('').sort()
@@ -23,113 +22,23 @@ const utils = {
     }
 }
 
-const datastore = {
-    // Readiness
-    isReady: false,
-    ready: () => {
-        datastore.isReady = true
-    },
-
-    // Index
-    index: [],
-    addIndex: (index) => {
-        if (index.isComment) {
-            return
-        }
-        datastore.index.push(index)
-        datastore.indexLemmaIndex[index.lemma] = index
-        index.offsets.forEach((offset) => {
-            if (!Array.isArray(datastore.indexOffsetIndex[offset])) {
-                datastore.indexOffsetIndex[offset] = []
-            }
-            datastore.indexOffsetIndex[offset].push(index)
-        })
-    },
-
-    indexLemmaIndex: {},
-    indexLemmaSearch: (query) => {
-        const output = {}
-        const lemmas = utils.getArray(query)
-        lemmas.forEach((lemma) => {
-            const item = datastore.indexLemmaIndex[lemma]
-            output[item.lemma] = item
-        })
-        return output
-    },
-
-    indexOffsetIndex: {},
-    indexOffsetSearch: (query) => {
-        const output = {}
-        const offsets = utils.getArray(query)
-        offsets.forEach((offset) => {
-            output[offset] = datastore.indexOffsetIndex[offset]
-        })
-        return output
-    },
-
-    // Data
-    data: [],
-    addData: (data) => {
-        if (data.isComment) {
-            return
-        }
-        datastore.data.push(data)
-        datastore.dataOffsetIndex[data.offset] = data
-        data.words.forEach((word) => {
-            if (!Array.isArray(datastore.dataLemmaIndex[word])) {
-                datastore.dataLemmaIndex[word] = []
-            }
-            datastore.dataLemmaIndex[word].push(data)
-        })
-    },
-
-    dataLemmaIndex: {},
-    dataLemmaSearch: (query) => {
-        const output = {}
-        const lemmas = utils.getArray(query)
-        lemmas.forEach((lemma) => {
-            output[lemma] = datastore.dataLemmaIndex[lemma]
-        })
-        return output
-    },
-
-    dataOffsetIndex: {},
-    dataOffsetSearch: (query) => {
-        const output = {}
-        const offsets = utils.getArray(query)
-        offsets.forEach((offset) => {
-            output[offset] = datastore.dataOffsetIndex[offset]
-        })
-        return output
-    },
-
-    // Size
-    getSize: () => {
-        return {
-            count: datastore.index.length + datastore.data.length,
-            indexes: Object.keys(datastore.indexOffsetIndex).length + Object.keys(datastore.indexLemmaIndex).length + Object.keys(datastore.dataOffsetIndex).length + Object.keys(datastore.dataLemmaIndex).length
-        }
-    },
-
-}
-
 const queries = {
 
     searchFor: (term) => {
         let output = {}
-        if (!datastore.isReady) {
+        if (!database.isReady) {
             return new Error('Dictionary is not ready to query yet')
         }
 
-        output = datastore.indexLemmaSearch(term)
+        output = database.indexLemmaSearch(term)
         Object.keys(output).forEach((key) => {
-            output[key].offsets = Object.values(datastore.dataOffsetSearch(output[key].offsets))
+            output[key].offsets = Object.values(database.dataOffsetSearch(output[key].offsets))
         })
         return output
     },
 
     searchOffsetsInDataFor: (offsets) => {
-        return datastore.dataOffsetSearch(offsets)
+        return database.dataOffsetSearch(offsets)
     },
 
     searchSimpleFor: (words) => {
@@ -145,21 +54,21 @@ const queries = {
     },
 
     wordsStartingWith: (prefix) => {
-        return datastore
+        return database
                 .index
                 .filter(item => item.lemma.startsWith(prefix))
                 .map(item => item.lemma)
     },
 
     wordsEndingWith: (suffix) => {
-        return datastore
+        return database
                 .index
                 .filter(item => item.lemma.endsWith(suffix))
                 .map(item => item.lemma)
     },
 
     wordsIncluding: (word) => {
-        return datastore
+        return database
                 .index
                 .filter(item => item.lemma.includes(word))
                 .map(item => item.lemma)
@@ -167,7 +76,7 @@ const queries = {
 
     wordsUsingAllCharactersFrom: (query, ignorePhrases = true) => {
         const querySplit = query.split('').sort()
-        return datastore
+        return database
                 .index
                 .filter((item) => {
                     const lemmaSplit = item.lemma.split('').sort()
@@ -189,7 +98,7 @@ const queries = {
     },
 
     wordsWithCharsIn: (query, priorityCharacters = '') => {
-        const matchingWords = datastore
+        const matchingWords = database
                 .index
                 .filter(item => utils.hasAllCharsIn(query, item.lemma))
                 .map(item => item.lemma)
@@ -209,7 +118,7 @@ const queries = {
 }
 
 module.exports = {
-    db: datastore,
+    db: database,
     utils,
     searchFor: queries.searchFor,
     searchOffsetsInDataFor: queries.searchOffsetsInDataFor,
