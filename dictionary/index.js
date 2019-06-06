@@ -1,34 +1,36 @@
 const Database = require('../database')
 
-let database = null
+class Dictionary {
+    constructor(path) {
+        this.database = null
+        this.path = path
+    }
 
-const dictionary = {
+    async init() {
+        this.database = new Database(this.path)
+        await this.database.init()
+    }
 
-    init: async (path) => {
-        database = new Database(path)
-        await database.init()
-    },
-
-    searchFor: (term) => {
+    searchFor(term) {
         let output = {}
-        if (!database.isReady) {
+        if (!this.database.isReady) {
             return new Error('Dictionary is not ready to query yet')
         }
 
-        output = database.indexLemmaSearch(term)
+        output = this.database.indexLemmaSearch(term)
         Object.keys(output).forEach((key) => {
-            output[key].offsets = Object.values(database.dataOffsetSearch(output[key].offsets))
+            output[key].offsets = Object.values(this.database.dataOffsetSearch(output[key].offsets))
         })
         return output
-    },
+    }
 
-    searchOffsetsInDataFor: (offsets) => {
-        return database.dataOffsetSearch(offsets)
-    },
+    searchOffsetsInDataFor(offsets) {
+        return this.database.dataOffsetSearch(offsets)
+    }
 
-    searchSimpleFor: (words) => {
+    searchSimpleFor(words) {
         const output = {}
-        const result = dictionary.searchFor(words)
+        const result = this.searchFor(words)
         Object.keys(result).forEach((lemma) => {
             output[lemma] = { 
                 words: result[lemma].offsets[0].words.join(', '), 
@@ -36,32 +38,32 @@ const dictionary = {
             }
         })
         return output
-    },
+    }
 
-    wordsStartingWith: (prefix) => {
-        return database
+    wordsStartingWith(prefix) {
+        return this.database
                 .index
                 .filter(item => item.lemma.startsWith(prefix))
                 .map(item => item.lemma)
-    },
+    }
 
-    wordsEndingWith: (suffix) => {
-        return database
+    wordsEndingWith(suffix) {
+        return this.database
                 .index
                 .filter(item => item.lemma.endsWith(suffix))
                 .map(item => item.lemma)
-    },
+    }
 
-    wordsIncluding: (word) => {
-        return database
+    wordsIncluding(word) {
+        return this.database
                 .index
                 .filter(item => item.lemma.includes(word))
                 .map(item => item.lemma)
-    },
+    }
 
-    wordsUsingAllCharactersFrom: (query, ignorePhrases = true) => {
+    wordsUsingAllCharactersFrom(query, ignorePhrases = true) {
         const querySplit = query.split('').sort()
-        return database
+        return this.database
                 .index
                 .filter((item) => {
                     const lemmaSplit = item.lemma.split('').sort()
@@ -80,27 +82,26 @@ const dictionary = {
                     return true
                 })
                 .map(item => item.lemma)
-    },
+    }
 
-    wordsWithCharsIn: (query, priorityCharacters = '') => {
-        const matchingWords = database
+    wordsWithCharsIn(query, priorityCharacters = '') {
+        const matchingWords = this.database
                 .index
-                .filter(item => dictionary.hasAllCharsIn(query, item.lemma))
+                .filter(item => Dictionary.hasAllCharsIn(query, item.lemma))
                 .map(item => item.lemma)
                 .sort((a, b) => {
                     if (priorityCharacters.length > 0) {
-                        const aPriority = dictionary.hasAllCharsIn(priorityCharacters, a) ? 10 : 0
-                        const bPriority = dictionary.hasAllCharsIn(priorityCharacters, b) ? 10 : 0
+                        const aPriority = Dictionary.hasAllCharsIn(priorityCharacters, a) ? 10 : 0
+                        const bPriority = Dictionary.hasAllCharsIn(priorityCharacters, b) ? 10 : 0
                         return (b.length + bPriority) - (a.length + aPriority)
-    
                     } 
                     return b.length - a.length
                     
                 })
-        return dictionary.searchSimpleFor(matchingWords)
-    },
+        return this.searchSimpleFor(matchingWords)
+    }
 
-    hasAllCharsIn: (word, test) => {
+    static hasAllCharsIn(word, test) {
         const wordSplit = word.split('').sort()
         const testSplit = test.split('').sort()
         
@@ -121,4 +122,4 @@ const dictionary = {
 
 }
 
-module.exports = dictionary
+module.exports = Dictionary

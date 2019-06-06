@@ -1,15 +1,13 @@
 /* eslint-disable no-console */
 const wordnet = require('en-wordnet')
-const dictionary = require('./index')
+const Dictionary = require('./index')
 
-// function log(item) {
-//     console.log(JSON.stringify(item, null, 2))
-// }
+const dictionary = new Dictionary(wordnet['3.0'])
 
 describe("Test the dictionary", () => {
 
     beforeAll(async () => {
-        await dictionary.init(wordnet['3.0'])
+        await dictionary.init()
     }, 20000)
 
     test('Test searchWord', () => {
@@ -90,8 +88,8 @@ describe("Test the dictionary", () => {
     // })
 
     test('Test hasAllCharsIn', () => {
-        expect(dictionary.hasAllCharsIn('bringing', 'ing')).toBe(true)
-        expect(dictionary.hasAllCharsIn('bringing', 'ding')).toBe(false)
+        expect(Dictionary.hasAllCharsIn('bringing', 'ing')).toBe(true)
+        expect(Dictionary.hasAllCharsIn('bringing', 'ding')).toBe(false)
     })
 
 })

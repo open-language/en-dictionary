@@ -1,3 +1,3 @@
-const dictionary = require('./dictionary')
+const Dictionary = require('./dictionary')
 
-module.exports = dictionary
+module.exports = Dictionary

@@ -1,9 +1,10 @@
 const wordnet = require('en-wordnet')
-const dictionary = require('./index')
+const Dictionary = require('./index')
 
 describe("Test the index file for EnDictionary", () => {
     test("Test initialization", async () => {
-        await dictionary.init(wordnet['3.0'])
+        const dictionary = new Dictionary(wordnet['3.0'])
+        await dictionary.init()
 
         const result = dictionary.searchFor('yet')
         expect(result.yet.lemma).toBe('yet')
