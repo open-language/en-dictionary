@@ -1,4 +1,7 @@
+const reiterator = require('reiterator')
 const Database = require('../database')
+
+const obj = reiterator.objects
 
 class Dictionary {
     constructor(path) {
@@ -15,6 +18,10 @@ class Dictionary {
         let output = {}
         if (!this.database.isReady) {
             return new Error('Dictionary is not ready to query yet')
+        }
+
+        if (!term || obj.isObject(term)) {
+            return output
         }
 
         output = this.database.indexLemmaSearch(term)
@@ -41,27 +48,39 @@ class Dictionary {
     }
 
     wordsStartingWith(prefix) {
-        return this.database
-                .index
-                .filter(item => item.lemma.startsWith(prefix))
-                .map(item => item.lemma)
+        if (obj.isString(prefix) && (prefix !== '')) {
+            return this.database
+            .index
+            .filter(item => item.lemma.startsWith(prefix))
+            .map(item => item.lemma)
+        }
+        return []
     }
 
     wordsEndingWith(suffix) {
-        return this.database
-                .index
-                .filter(item => item.lemma.endsWith(suffix))
-                .map(item => item.lemma)
+        if (obj.isString(suffix) && (suffix !== '')) {
+            return this.database
+                    .index
+                    .filter(item => item.lemma.endsWith(suffix))
+                    .map(item => item.lemma)
+        }
+        return []
     }
 
     wordsIncluding(word) {
-        return this.database
-                .index
-                .filter(item => item.lemma.includes(word))
-                .map(item => item.lemma)
+        if (obj.isString(word) && (word !== '')) {
+            return this.database
+            .index
+            .filter(item => item.lemma.includes(word))
+            .map(item => item.lemma)
+        }
+        return []
     }
 
     wordsUsingAllCharactersFrom(query, ignorePhrases = true) {
+        if(!obj.isString(query) || (query === '')) {
+            return []
+        }
         const querySplit = query.split('').sort()
         return this.database
                 .index
@@ -85,6 +104,9 @@ class Dictionary {
     }
 
     wordsWithCharsIn(query, priorityCharacters = '') {
+        if (!obj.isString(query) || !obj.isString(priorityCharacters)) {
+            return {}
+        }
         const matchingWords = this.database
                 .index
                 .filter(item => Dictionary.hasAllCharsIn(query, item.lemma))

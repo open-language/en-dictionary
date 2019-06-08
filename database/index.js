@@ -1,5 +1,8 @@
+const reiterator = require('reiterator')
 const utils = require('../utils')
 const Reader = require('../reader')
+
+const obj = reiterator.objects
 
 class Database {
 
@@ -53,21 +56,25 @@ class Database {
 
     indexLemmaSearch(query) {
         const output = {}
-        const lemmas = utils.getArray(query)
-        lemmas.forEach((lemma) => {
-            output[this.indexLemmaIndex[lemma].lemma] = Database.copyIndex(this.indexLemmaIndex[lemma])
+        utils.getArray(query).forEach((lemma) => {
+            if (lemma && this.indexLemmaIndex[lemma]) {
+                output[this.indexLemmaIndex[lemma].lemma] = Database.copyIndex(this.indexLemmaIndex[lemma])
+            }
         })
         return output
     }
 
     indexOffsetSearch(query) {
         const output = {}
-        const offsets = utils.getArray(query)
-        offsets.forEach((offset) => {
-            output[offset] = []
-            this.indexOffsetIndex[offset].forEach((item) => {
-                output[offset].push(Database.copyIndex(item))
-            })
+        utils.getArray(query).forEach((offset) => {
+            if (offset && this.indexOffsetIndex[offset] && obj.isArray(this.indexOffsetIndex[offset])) {
+                output[offset] = []
+                this.indexOffsetIndex[offset].forEach((item) => {
+                    if (item) {
+                        output[offset].push(Database.copyIndex(item))
+                    }
+                })    
+            }
         })
         return output
     }
@@ -101,21 +108,25 @@ class Database {
 
     dataLemmaSearch(query) {
         const output = {}
-        const lemmas = utils.getArray(query)
-        lemmas.forEach((lemma) => {
-            output[lemma] = []
-            this.dataLemmaIndex[lemma].forEach((item) => {
-                output[lemma].push(Database.copyData(item))
-            })
+        utils.getArray(query).forEach((lemma) => {
+            if (lemma && this.dataLemmaIndex[lemma] && obj.isArray(this.dataLemmaIndex[lemma])) {
+                output[lemma] = []
+                this.dataLemmaIndex[lemma].forEach((item) => {
+                    if (item) {
+                        output[lemma].push(Database.copyData(item))
+                    }
+                })    
+            }
         })
         return output
     }
 
     dataOffsetSearch(query) {
         const output = {}
-        const offsets = utils.getArray(query)
-        offsets.forEach((offset) => {
-            output[offset] = Database.copyData(this.dataOffsetIndex[offset])
+        utils.getArray(query).forEach((offset) => {
+            if (offset && this.dataOffsetIndex[offset]) {
+                output[offset] = Database.copyData(this.dataOffsetIndex[offset])
+            }
         })
         return output
     }
