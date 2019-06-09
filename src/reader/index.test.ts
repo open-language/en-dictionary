@@ -1,8 +1,8 @@
-const path = require('path')
-const Reader = require('./index')
+import path from 'path'
+import Reader from './index'
 
 const mockDb = {
-    path: path.join(__dirname, '..', 'mockWordnet'),
+    path: path.join(__dirname, '..', '..', 'mockWordnet'),
     index: 0,
     data: 0,
     isReady: false,

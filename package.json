@@ -1,7 +1,8 @@
 {
   "name": "en-dictionary",
-  "version": "1.2.1",
-  "main": "index.js",
+  "version": "1.2.2",
+  "main": "dist/index.js",
+  "types": "dist/index.d.js",
   "repository": "git@github.com:open-language/en-dictionary.git",
   "author": "Sudhanshu Raheja <sudhanshu@leftshift.io>",
   "license": "MIT",
@@ -21,14 +22,22 @@
     "eslint-plugin-import": "^2.17.3",
     "eslint-plugin-jest": "^22.6.4",
     "jest": "^24.8.0",
-    "prettier": "^1.17.1"
+    "prettier": "^1.17.1",
+    "@babel/preset-typescript": "^7.3.3",
+    "@types/jest": "^24.0.13",
+    "@types/node": "^12.0.7",
+    "@typescript-eslint/parser": "^1.9.0",
+    "ts-jest": "^24.0.2",
+    "typescript": "^3.5.1"
+
   },
   "scripts": {
     "start": "node index.js",
-    "test": "jest --detectOpenHandles"
+    "test": "tsc && jest --detectOpenHandles",
+    "build": "tsc"
   },
   "dependencies": {
-    "en-wordnet": "^2.0.2",
+    "en-wordnet": "^2.0.5",
     "reiterator": "^1.0.0"
   }
 }

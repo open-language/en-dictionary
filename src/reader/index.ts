@@ -1,13 +1,19 @@
-const readline = require('readline')
-const fs = require('fs')
-const parser = require('../parser')
+import readline from 'readline'
+import fs from 'fs'
+import IndexLine from '../parser/index.line';
+import DataLine from '../parser/data.line';
 
 const fileTypes = ['index', 'data']
 const wordTypes = ['adj', 'adv', 'noun', 'verb']
 
 
 class Reader {
-    constructor(db) {
+
+    db: any
+    isReady: boolean
+    readRemaining: number
+
+    constructor(db: any) {
         this.db = db
         this.isReady = false
         this.readRemaining = 8
@@ -20,15 +26,15 @@ class Reader {
                     const file = `${this.db.path}/${fileType}.${wordType}`
                     const readerInterface = readline.createInterface({
                         input: fs.createReadStream(file),
-                        output: false
+                        output: undefined
                     })
             
                     readerInterface.on('line', (line) => {
                         if (fileType === 'index') {
-                            const item = new parser.IndexLine(line)
+                            const item = new IndexLine().parse(line)
                             this.db.addIndex(item)
                         } else {
-                            const item = new parser.DataLine(line)
+                            const item = new DataLine().parse(line)
                             this.db.addData(item)
                         }
                     })
@@ -54,4 +60,4 @@ class Reader {
 
 }
 
-module.exports = Reader
+export default Reader
