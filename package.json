@@ -1,6 +1,6 @@
 {
   "name": "en-dictionary",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "main": "dist/index.js",
   "types": "dist/index.d.js",
   "repository": "git@github.com:open-language/en-dictionary.git",
