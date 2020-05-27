@@ -39,11 +39,16 @@ class Database {
       return;
     }
     this.index.push(index);
-    this.indexLemmaIndex.get(index.lemma)?.set(index.pos, index) ??
+    
+    const existingIndicies = this.indexLemmaIndex.get(index.lemma);
+    if (existingIndicies) {
+      existingIndicies.set(index.pos, index) 
+    } else {
       this.indexLemmaIndex.set(
         index.lemma,
         new Map<string, Index>([[index.pos, index]])
       );
+    }
 
     index.offsets.forEach((offset) => {
       let output: Index[] = [];
