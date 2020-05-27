@@ -4,7 +4,6 @@ import Index from '../parser/interace.index';
 import SearchSimple from './interface.searchSimple';
 
 class Dictionary {
-
     path: string
     database: Database
 
@@ -18,43 +17,51 @@ class Dictionary {
     }
 
     searchFor(term: string[]) {
-        let output = new Map<string, Index>()
+        let output = new Map<string, Map<string, Index>>();
 
-        output = this.database.indexLemmaSearch(term)
-        output.forEach((index, lemma) => {
-            const lemmaData = this.searchOffsetsInDataFor(index.offsets)
-            index.offsetData = []
-            lemmaData.forEach((data) => {
-                index.offsetData.push(data)
-            })
-            output.set(lemma, index)
-        })
-        return output
+        output = this.database.indexLemmaSearch(term);
+        output.forEach((lemmaMap, lemma) => {
+            lemmaMap.forEach((index) => {
+                const lemmaData = this.searchOffsetsInDataFor(index.offsets);
+                index.offsetData = [];
+                lemmaData.forEach((data) => {
+                    index.offsetData.push(data);
+                });
+                output.get(lemma)?.set(index.pos, index);
+            });
+        });
+        return output;
     }
 
     searchOffsetsInDataFor(offsets: number[]) {
-        return this.database.dataOffsetSearch(offsets)
+        return this.database.dataOffsetSearch(offsets);
     }
 
     searchSimpleFor(words: string[]) {
-        const output = new Map<string, SearchSimple>()
-        const result = this.searchFor(words)
+        const output = new Map<string, Map<string, SearchSimple>>();
+        const result = this.searchFor(words);
 
-        result.forEach((index, lemma) => {
-            if (index.offsetData.length > 0) {
-                let meaning = ''
-                const firstWords = index.offsetData[0].words.join(', ')
-                if (index.offsetData[0].glossary.length > 0) {
-                    meaning = index.offsetData[0].glossary[0]
+        result.forEach((lemmaMap: Map<string, Index>, lemma: string) => {
+            lemmaMap.forEach((index) => {
+                if (index.offsetData.length > 0) {
+                    let meaning = "";
+                    const firstWords = index.offsetData[0].words.join(", ");
+                    if (index.offsetData[0].glossary.length > 0) {
+                        meaning = index.offsetData[0].glossary[0];
+                    }
+
+                    output.get(lemma)?.set(index.pos, {
+                        words: firstWords,
+                        meaning: meaning,
+                        lemma: lemma,
+                    }) ?? output.set(lemma, new Map<string, SearchSimple>([[index.pos, {
+                        words: firstWords,
+                        meaning: meaning,
+                        lemma: lemma,
+                    }]]))
                 }
-
-                output.set(lemma, {
-                    words: firstWords,
-                    meaning: meaning,
-                    lemma: lemma
-                })
-            }
-        })
+            });
+        });
 
         return output
     }

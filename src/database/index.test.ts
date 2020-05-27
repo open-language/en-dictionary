@@ -20,8 +20,8 @@ describe("Test the dictionary", () => {
         console.time('addIndex')
         db.addIndex(index)
         console.timeEnd('addIndex')
-        expect(db.indexLemmaIndex.get('test_christmas_tree')!.lemma).toBe('test_christmas_tree')
-        expect(db.indexLemmaIndex.get('test_christmas_tree')!.offsets).toEqual([12787364, 12738599, 11621547, 11621281, 3026626])
+        expect(db.indexLemmaIndex.get('test_christmas_tree')!.get("noun")!.lemma).toBe('test_christmas_tree')
+        expect(db.indexLemmaIndex.get('test_christmas_tree')!.get("noun")!.offsets).toEqual([12787364, 12738599, 11621547, 11621281, 3026626])
         expect(db.indexOffsetIndex.get(12787364)![0].offsets.join(',')).toContain('12787364')
     })
 
@@ -29,16 +29,16 @@ describe("Test the dictionary", () => {
         console.time('indexLemmaSearch')
         let result = db.indexLemmaSearch(['christmas_tree'])
         console.timeEnd('indexLemmaSearch')
-        expect(result.get('christmas_tree')!.lemma).toBe('christmas_tree')
-        expect(result.get('christmas_tree')!.offsets.join(',')).toContain('12787364')
+        expect(result.get('christmas_tree')!.get("noun")!.lemma).toBe('christmas_tree')
+        expect(result.get('christmas_tree')!.get("noun")!.offsets.join(',')).toContain('12787364')
 
         console.time('indexLemmaSearch2')
         result = db.indexLemmaSearch(['christmas_tree', 'preposterous'])
         console.timeEnd('indexLemmaSearch2')
-        expect(result.get('christmas_tree')!.lemma).toBe('christmas_tree')
-        expect(result.get('christmas_tree')!.offsets.join(',')).toContain('12787364')
-        expect(result.get('preposterous')!.lemma).toBe('preposterous')
-        expect(result.get('preposterous')!.offsets.join(',')).toContain('2570643')
+        expect(result.get('christmas_tree')!.get("noun")!.lemma).toBe('christmas_tree')
+        expect(result.get('christmas_tree')!.get("noun")!.offsets.join(',')).toContain('12787364')
+        expect(result.get('preposterous')!.get("adjective")!.lemma).toBe('preposterous')
+        expect(result.get('preposterous')!.get("adjective")!.offsets.join(',')).toContain('2570643')
     })
 
     test('Test IndexOffsetSearch', () => {

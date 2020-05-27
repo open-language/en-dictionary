@@ -8,7 +8,7 @@ class Database {
     isReady: boolean
 
     index: Index[]
-    indexLemmaIndex: Map<string, Index>
+    indexLemmaIndex: Map<string, Map<string, Index>>
     indexOffsetIndex: Map<number, Index[]>
 
     data: Data[]
@@ -40,56 +40,48 @@ class Database {
             return
         }
         this.index.push(index)
-        this.indexLemmaIndex.set(index.lemma, index)
-
+        this.indexLemmaIndex.get(index.lemma)?.set(index.pos, index) ??
+            this.indexLemmaIndex.set(
+                index.lemma,
+                new Map<string, Index>([[index.pos, index]])
+            )
+    
         index.offsets.forEach((offset) => {
             let output: Index[] = []
             if (this.indexOffsetIndex.get(offset) !== undefined) {
-                output = this.indexOffsetIndex.get(offset)!
+                output = this.indexOffsetIndex.get(offset)!;
             }
-            output.push(index)
-            this.indexOffsetIndex.set(offset, output)
-        })
+            output.push(index);
+            this.indexOffsetIndex.set(offset, output);
+        });
     }
 
-    static copyIndex(index: Index) {
-        const output: Index = {
-            lemma: index.lemma,
-            pos: index.pos,
-            offsetCount: index.offsetCount,
-            pointerCount: index.pointerCount,
-            pointers: [...index.pointers],
-            senseCount: index.senseCount,
-            tagSenseCount: index.tagSenseCount,
-            offsets: [...index.offsets],
-            isComment: index.isComment,
-            offsetData: [...index.offsetData]
-        }
-        return output
+    static copyIndex(indexMap: Map<string, Index>) {
+        return new Map(indexMap)
     }
 
     indexLemmaSearch(query: string[]) {
-        const output = new Map<string, Index>()
+        const output = new Map<string, Map<string, Index>>();
         query.forEach((lemma) => {
-            if ((lemma !== '') && (this.indexLemmaIndex.get(lemma) !== undefined)) {
-                output.set(lemma, Database.copyIndex(this.indexLemmaIndex.get(lemma)!))
+            if (lemma !== "" && this.indexLemmaIndex.get(lemma) !== undefined) {
+                output.set(lemma, Database.copyIndex(this.indexLemmaIndex.get(lemma)!));
             }
-        })
-        return output
-    }
+        });
+        return output;
+      }
 
     indexOffsetSearch(query: number[]) {
-        const output = new Map<Number, Index[]>()
+        const output = new Map<Number, Index[]>();
         query.forEach((offset) => {
             if (offset && this.indexOffsetIndex.get(offset)) {
-                const items: Index[] = []
+                const items: Index[] = [];
                 this.indexOffsetIndex.get(offset)!.forEach((item) => {
-                    items.push(Database.copyIndex(item))
-                })
-                output.set(offset, items)
+                    items.push({ ...item });
+                });
+                output.set(offset, items);
             }
-        })
-        return output
+        });
+        return output;
     }
 
     addData(data: Data) {
