@@ -29,7 +29,6 @@
     "@typescript-eslint/parser": "^1.9.0",
     "ts-jest": "^24.0.2",
     "typescript": "^3.5.1"
-
   },
   "scripts": {
     "start": "node index.js",
@@ -40,5 +39,7 @@
     "en-wordnet": "^2.0.5",
     "reiterator": "^1.0.0"
   },
-  "files": ["dist/**/*"]
+  "files": [
+    "dist/**/*"
+  ]
 }
