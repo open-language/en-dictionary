@@ -27,7 +27,9 @@ class Dictionary {
         lemmaData.forEach((data) => {
           index.offsetData.push(data);
         });
-        output.get(lemma)?.set(index.pos, index);
+        if (output.get(lemma)) {
+          output.get(lemma)!.set(index.pos, index);
+        }
       });
     });
     return output;
@@ -50,11 +52,13 @@ class Dictionary {
             meaning = index.offsetData[0].glossary[0];
           }
 
-          output.get(lemma)?.set(index.pos, {
-            words: firstWords,
-            meaning: meaning,
-            lemma: lemma,
-          }) ??
+          if (output.get(lemma)) {
+            output.get(lemma)!.set(index.pos, {
+              words: firstWords,
+              meaning: meaning,
+              lemma: lemma,
+            });
+          } else {
             output.set(
               lemma,
               new Map<string, SearchSimple>([
@@ -68,6 +72,7 @@ class Dictionary {
                 ],
               ])
             );
+          }
         }
       });
     });
