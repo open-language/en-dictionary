@@ -2,20 +2,20 @@ import Pointer from "./interface.pointer";
 import Data from "./interface.data";
 
 interface Index {
-    lemma: string,
-    pos: string,
+  lemma: string;
+  pos: string;
 
-    offsetCount: number,
-    offsets: number[],
-    offsetData: Data[],
+  offsetCount: number;
+  offsets: number[];
+  offsetData: Data[];
 
-    pointerCount: number,
-    pointers: Pointer[],
+  pointerCount: number;
+  pointers: Pointer[];
 
-    senseCount: number,
-    tagSenseCount: number,
+  senseCount: number;
+  tagSenseCount: number;
 
-    isComment: boolean
+  isComment: boolean;
 }
 
-export default Index
+export default Index;
