@@ -1,6 +1,5 @@
 /* eslint-disable no-console */
 import wordnet from "en-wordnet";
-import path from "path";
 import Database from "../database";
 import IndexLine from "../parser/index.line";
 import DataLine from "../parser/data.line";
