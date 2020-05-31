@@ -1,5 +1,4 @@
 import Database from "../database";
-import Data from "../parser/interface.data";
 import Index from "../parser/interace.index";
 import SearchSimple from "./interface.searchSimple";
 
