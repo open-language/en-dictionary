@@ -4,7 +4,7 @@ En-Dictonary is a node.js module which makes works and their relations available
 
 ## About
 
-This packages uses the [En-Wordnet](https://github.com/open-language/en-wordnet) package to make the words, their meanings and relationships available to your node.js package. It also adds helper functions for other ways to access the information.
+This packages uses the [en-wordnet](https://github.com/open-language/en-wordnet) package to make the words, their meanings and relationships available to your node.js package. It also adds helper functions for other ways to access the information.
 
 ![](https://img.shields.io/travis/open-language/en-dictionary.svg)
 ![](https://img.shields.io/codecov/c/github/open-language/en-dictionary/master.svg)
@@ -144,7 +144,7 @@ Map(1) {
 }
 ```
 
-There's also a simpler response version
+There's also a simpler response version:
 
 ```js
 let result = dict.searchSimpleFor("preposterous");
@@ -166,15 +166,15 @@ Map(1) {
 
 ### Find words which start with, end with or include a certain set of words
 
-You can find words which start or end with a specific set of words, you can do this
+You can find words which start or end with a specific set of words, you can do this:
 
 ```js
-let result = dict.wordsStartingWith('prestig');
-result = dict.wordsEndingWith('sterous');
-result = dict.wordsIncluding('grating');
+let result = dict.wordsStartingWith("prestig");
+result = dict.wordsEndingWith("sterous");
+result = dict.wordsIncluding("grating");
 ```
 
-Here's what you would get on running the functions above
+Here's what you would get on running the functions above:
 
 ```json
 ["prestigious", "prestige", "prestigiousness"]
@@ -193,18 +193,18 @@ Here's what you would get on running the functions above
 This is useful when you're playing scrabble or a similar game. You can define the list of characters that you have available and the minimum length of the words that you need
 
 ```js
-let result = dict.wordsWithCharsIn('toaddndyrnrtssknwfsaregte');
-let result = dict.wordsWithCharsIn('toaddndyrnrtssknwfsaregte', 'ab'); // In this case words which both a and b will show up on the top
+let result = dict.wordsWithCharsIn("toaddndyrnrtssknwfsaregte");
+let result = dict.wordsWithCharsIn("toaddndyrnrtssknwfsaregte", "ab"); // In this case words which both a and b will show up on the top
 ```
 
-You can expect the following output if you run the command above
+You can expect the following output if you run the command above:
 
 ```js
 Map(10) {
   'grandstander' => Map(1) {
     'noun' => {
       words: 'grandstander',
-      meaning: 'someone who performs with an eye to the applause from spectators in the grandstand',        
+      meaning: 'someone who performs with an eye to the applause from spectators in the grandstand',
       lemma: 'grandstander'
     }
   },
@@ -260,7 +260,7 @@ Map(10) {
   'transferase' => Map(1) {
     'noun' => {
       words: 'transferase',
-      meaning: 'any of various enzymes that move a chemical group from one compound to another compound',   
+      meaning: 'any of various enzymes that move a chemical group from one compound to another compound',
       lemma: 'transferase'
     }
   },
@@ -276,13 +276,13 @@ Map(10) {
 
 ### Find words which have all of the words of a given word
 
-This is sort of the opposite of what we did above
+This is sort of the opposite of what we did above:
 
 ```js
-let result = dict.wordsUsingAllCharactersFrom('indonesia');
+let result = dict.wordsUsingAllCharactersFrom("indonesia");
 ```
 
-You can expect the following output if you run the command above
+You can expect the following output if you run the command above:
 
 ```json
 [
