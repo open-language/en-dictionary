@@ -64,7 +64,7 @@ dataOffsetSearch2: 0ms
 
 ### Query words
 
-You can query for a single word with this syntax. If you want to use multiple words, replace the `` with `_`.
+You can query for a single word with this syntax. If you want to use multiple words, replace the ` ` with `_`.
 
 ```js
 let result = dict.searchFor("preposterous");
