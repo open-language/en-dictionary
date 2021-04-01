@@ -21,14 +21,14 @@ yarn add en-dictionary en-wordnet
 Once it has been added, you need to initialize the dictionary, like so:
 
 ```js
-const wordnet = require("en-wordnet");
-const Dictionary = require("en-dictionary");
+const wordnet = require("en-wordnet").default;
+const Dictionary = require("en-dictionary").default;
 
 const start = async () => {
   const dictionary = new Dictionary(wordnet.get("3.0"));
   await dictionary.init();
 
-  const result = dictionary.searchFor("yet");
+  const result = dictionary.searchFor(["yet"]);
 };
 start();
 ```
