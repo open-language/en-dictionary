@@ -42,7 +42,7 @@ class Reader {
             if (this.readRemaining === 0) {
               this.isReady = true;
               this.db.ready();
-              resolve();
+              resolve("");
             }
           });
 

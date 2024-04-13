@@ -1,3 +1,4 @@
+import { expect, test, describe } from "bun:test";
 import path from "path";
 import Reader from "./index";
 

@@ -1,8 +1,8 @@
+const enWordnet = require("en-wordnet").default;
 import { expect, test, describe, beforeAll } from "bun:test";
-import enWordnet from "en-wordnet";
 import Dictionary from "./index";
 
-const dictionary = new Dictionary(enWordnet.default.get("3.0"));
+const dictionary = new Dictionary(enWordnet.get("3.0"));
 
 describe("Test the index file for EnDictionary", () => {
   beforeAll(async () => {

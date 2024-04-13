@@ -32,7 +32,7 @@ class DataLine {
 
     const meta = glossarySplit[0].split(" ");
     this.line.offset = parseInt(meta.shift()!, 10);
-    const lexFilenum = parseInt(meta.shift()!, 10);
+    // const lexFilenum = parseInt(meta.shift()!, 10);
 
     const pos = meta.shift();
     if (pos !== undefined && configs.pos.get(pos) !== undefined) {
@@ -42,7 +42,7 @@ class DataLine {
     this.line.wordCount = parseInt(meta.shift()!, 16);
     for (let index = 0; index < this.line.wordCount; index += 1) {
       const word = meta.shift();
-      const lexId = parseInt(meta.shift()!, 16);
+      // const lexId = parseInt(meta.shift()!, 16);
       if (word !== undefined) {
         this.line.words.push(word.toLowerCase());
       }

@@ -1,3 +1,4 @@
+import { expect, test, describe } from "bun:test";
 import IndexLine from "./index.line";
 
 describe("Test parsing an index line", () => {

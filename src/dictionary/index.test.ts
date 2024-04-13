@@ -1,8 +1,8 @@
-/* eslint-disable no-console */
-import wordnet from "en-wordnet";
+import { expect, test, describe, beforeAll } from "bun:test";
+const wordnet = require("en-wordnet").default;
 import Dictionary from "../dictionary";
 
-const dictionary = new Dictionary(wordnet.default.get("3.0")!);
+const dictionary = new Dictionary(wordnet.get("3.0")!);
 
 describe("Test the dictionary", () => {
   beforeAll(async () => {

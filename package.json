@@ -1,9 +1,9 @@
 {
   "name": "en-dictionary",
-  "version": "2.0.2",
+  "version": "2.0.3",
+  "type": "module",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "type": "module",
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/open-language/en-dictionary.git"
@@ -19,14 +19,20 @@
     "nlp"
   ],
   "devDependencies": {
-    "bun-types": "^1.1.3",
-    "prettier": "^1.17.1"
+    "@types/bun": "^1.0.12",
+    "bun-plugin-dts": "^0.2.2",
+    "prettier": "^3.2.5",
+    "typescript": "^5.4.5"
   },
   "scripts": {
-    "start": "node src/index.ts"
+    "publish": "npm pkg fix; npm publish",
+    "build": "bun run build.mjs"
   },
   "dependencies": {
-    "en-wordnet": "^2.0.5",
-    "reiterator": "^1.0.0"
-  }
+    "en-wordnet": "^2.0.11",
+    "reiterator": "^1.1.4"
+  },
+  "files": [
+    "dist"
+  ]
 }
