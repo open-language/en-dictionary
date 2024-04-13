@@ -2,7 +2,7 @@
 import wordnet from "en-wordnet";
 import Dictionary from "../dictionary";
 
-const dictionary = new Dictionary(wordnet.get("3.0")!);
+const dictionary = new Dictionary(wordnet.default.get("3.0")!);
 
 describe("Test the dictionary", () => {
   beforeAll(async () => {
