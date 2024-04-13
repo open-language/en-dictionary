@@ -23,7 +23,7 @@ Once it has been added, you need to initialize the dictionary, like so:
 
 ```js
 const wordnet = require("en-wordnet").default;
-const Dictionary = require("en-dictionary");
+import Dictionary from "en-dictionary";
 
 const start = async () => {
     const dictionary = new Dictionary(wordnet.get("3.0"));
